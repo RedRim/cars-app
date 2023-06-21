@@ -36,7 +36,7 @@ def add_page(request):
             return redirect('home')
         else:
             form = AddPostForm()
-    return render(request, 'cars/addpage.html', {'form': form, 'menu': menu, 'title': 'Добавление статьи'})
+    return render(request, 'cars/addpage.html', {'menu': menu, 'title': 'Добавление статьи'})
 
 
 def contact(request):
