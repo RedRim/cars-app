@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <!-- <link rel="stylesheet" href="css/style.css" /> -->
+        <meta charset="utf-8" />
+    </head>
+    <body>
+    {% block mainmenu %}
+        <header></header>
+        <aside>
+            <ul>
+                {% for m in menu %}
+                <li><form action="{{ m.url_name }}"><button>{{ m.title }}</button></form></li>
+                {% endfor %}
+            </ul>
+        </aside>
+        <div class="center"></div>
+    {% endblock mainmenu %}
+
+    {% block content %}
+    {% endblock %}
+    </body>
+</html>
