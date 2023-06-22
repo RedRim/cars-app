@@ -6,17 +6,7 @@
     {% for p in posts %}
     <li>
         <h2>{{ p.brand.name }} {{ p.title }}</h2>
-        <p>{{ p.content}}</p>
-        <p>Year Release: {{ p.characteristics.year_release }}</p>
-        <p>Body Type: {{ p.characteristics.body_type }}</p>
-        <p>Engine Capacity: {{ p.characteristics.engine_capacity }}</p>
-        <p>Engine Power: {{ p.characteristics.engine_power }}</p>
-        <p>Drive: {{ p.characteristics.drive }}</p>
-        <p>Fuel Consumption: {{ p.characteristics.fuel_consumption }}</p>
-        <p>Number of Seats: {{ p.characteristics.number_of_seats }}</p>
-        <p>Trunk Volume: {{ p.characteristics.trunk_volume }}</p>
-        <p>Cost: {{ p.characteristics.cost }}</p>
-        
+        <p>{{ p.content}}</p>  
         <hr>
     </li>
     {% endfor %}
