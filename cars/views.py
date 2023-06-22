@@ -13,10 +13,10 @@ menu = [{'title': 'О Сайте', 'url_name': 'about'},
 
 def index(request):
     posts = Cars.objects.all()
-    brands = Brands.objects.all()
+    #brands = Brands.objects.all()
     context = {
         'posts': posts,
-        'brands': brands,
+        #'brands': brands,
         'menu': menu,
         'title': 'Главная страница',
         #'brand_selected': 0,
@@ -28,15 +28,15 @@ def about(request):
     return render(request, 'cars/about.html', {'menu': menu, 'title': 'О сайте'})
 
 
-def add_page(request):
+def addpage(request):
     if request.method == 'POST':
         form = AddPostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('home')
-        else:
-            form = AddPostForm()
-    return render(request, 'cars/addpage.html', {'menu': menu, 'title': 'Добавление статьи'})
+    else:
+        form = AddPostForm()
+    return render(request, 'cars/addpage.html', {'form': form, 'menu': menu, 'title': 'Добавление статьи'})
 
 
 def contact(request):
