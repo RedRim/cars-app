@@ -4,10 +4,10 @@ from django.core.exceptions import ValidationError
 from .models import *
 
 
-class AddPostForm(forms.Form):
+class AddPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['brand'].empty_label = "Марка не выбрана"
+        self.fields['brand'].empty_label = "Категория не выбрана"
 
     class Meta:
         model = Cars
@@ -25,7 +25,7 @@ class AddPostForm(forms.Form):
         return title
 
 
-class AddCharacteristicsForm(forms.Form):
+class AddCharacteristicsForm(forms.ModelForm):
     class Meta:
         model = Characteristics
         fields = ['year_release',

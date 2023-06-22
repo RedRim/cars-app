@@ -43,7 +43,7 @@ class CarsHome(ListView):
 
 class AddPage(CreateView):
     form_class = AddPostForm
-    template_name = "cars/post.html"
+    template_name = "cars/addpage.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
          context = super().get_context_data(**kwargs)
