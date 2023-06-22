@@ -5,8 +5,10 @@
 <ul>
     {% for p in posts %}
     <li>
+
         <h2>{{ p.brand.name }} {{ p.title }}</h2>
-        <p>{{ p.content}}</p>  
+        <p>{{ p.short_content }}</p>  
+        <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
         <hr>
     </li>
     {% endfor %}

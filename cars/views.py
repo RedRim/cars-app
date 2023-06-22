@@ -33,16 +33,27 @@ class AddPage(DataMixin, CreateView):
         return dict(list(context.items()) + list(c_def.items()))
     
 
-class ShowPost(DetailView):
-    model = Cars
-    template_name = "cars/post.html"
-    slug_url_kwarg = 'post_slug'
-    context_object_name = 'post'
+def show_post(request, post_id):
+    post = get_object_or_404(Cars, pk=post_id)
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=context['post'])
-        return dict(list(context.items()) + list(c_def.items()))
+    context = {
+            'post': post,
+            'menu': menu,
+            'title': post.title,
+        }
+
+    return render(request, 'cars/post.html', context=context)
+
+# class ShowPost(DetailView):
+#     model = Cars
+#     template_name = "cars/post.html"
+#     slug_url_kwarg = 'post_slug'
+#     context_object_name = 'post'
+
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         c_def = self.get_user_context(title=context['post'])
+#         return dict(list(context.items()) + list(c_def.items()))
 
 
 class CarsBrand(ListView):
