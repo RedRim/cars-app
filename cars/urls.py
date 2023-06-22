@@ -9,7 +9,7 @@ urlpatterns = [
     path('contact/', contact, name='contact'),
     path('login/', login, name='login'),
     # path('post/<int:post_id>/', ShowPost.as_view(), name='post'),
-    path('post/<int:post_id>/', show_post, name='post'),
+    # path('post/<int:post_id>/', show_post, name='post'),
     path('brand/<slug:brand_slug>/', CarsBrand.as_view(), name='brand'),
 ]
 
