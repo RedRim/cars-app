@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import FormMixin
@@ -7,60 +7,31 @@ from django.views.generic.edit import FormMixin
 
 from .models import *
 from .forms import *
+from .utils import *
 
-menu = [{'title': 'О Сайте', 'url_name': 'about'},
-        {'title': 'Добавить статью', 'url_name': 'addpage'},
-        {'title': 'Обратная связь', 'url_name': 'contact'},
-        {'title': 'Войти', 'url_name': 'login'},
-        ]
-
-class CarsHome(ListView):
+class CarsHome(DataMixin, ListView):
     model = Cars
     template_name = "cars/index.html"
     context_object_name = 'posts'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['menu'] = menu
-        context['title'] = 'Главная страница'
-        # context['cat_selected'] = 0
-        return context
+        c_def = self.get_user_context(title="Главная страница")
+        return dict(list(context.items()) + list(c_def.items()))
     
     def get_queryset(self):
         return Cars.objects.filter(is_published=True)
+    
 
-
-# def index(request):
-#     posts = Cars.objects.all()
-#     # brands = Brands.objects.all()
-#     context = {
-#         'posts': posts,
-#         # 'brands': brands,
-#         'menu': menu,
-#         'title': 'Главная страница',
-#         #'brand_selected': 0,
-#     }
-#     return render(request, 'cars/index.html', context=context)
-
-class AddPage(CreateView):
+class AddPage(DataMixin, CreateView):
     form_class = AddPostForm
     template_name = "cars/addpage.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
-         context = super().get_context_data(**kwargs)
-         context['title'] = 'Добавление статьи'
-         context['menu'] = menu
-         return context
-
-# def add_page(request):
-#     if request.method == 'POST':
-#         form = AddPostForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('home')
-#         else:
-#             form = AddPostForm()
-#     return render(request, 'cars/addpage.html', {'menu': menu, 'title': 'Добавление статьи'})
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Добавление статьи")
+        return dict(list(context.items()) + list(c_def.items()))
+    
 
 class ShowPost(DetailView):
     model = Cars
@@ -70,21 +41,9 @@ class ShowPost(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = context['post']
-        context['menu'] = menu
-        return context
+        c_def = self.get_user_context(title=context['post'])
+        return dict(list(context.items()) + list(c_def.items()))
 
-# def show_post(request, post_id):
-#     post = get_object_or_404(Cars, pk=post_id)
-
-#     context = {
-#         'post': post,
-#         'menu': menu,
-#         'title': 'Главная страница',
-#         'brand_selected': post.brand_id,
-#     }
-
-#     return render(request, 'cats/post.html', context=context)
 
 class CarsBrand(ListView):
     model = Cars
@@ -94,25 +53,13 @@ class CarsBrand(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['menu'] = menu
-        context['title'] = 'Фирма - ' + str(context['posts'][0].brand)
-        # context['cat_selected'] = context['posts'][0].brand_id
-        return context
+        c_def = self.get_user_context(title="Категория - " + str(context['posts'][0].brand),
+                                      brand_selected=context['posts'][0].brand_id)
+        return dict(list(context.items()) + list(c_def.items()))
     
     def get_queryset(self):
         return Cars.objects.filter(brand__slug=self.kwargs['brand_slug'], is_published=True)
-
-# def show_brand(request, brand_id):
-#     posts = Cars.objects.filter(brand_id=brand_id)
-#     brands = Brands.objects.all()
-#     context = {
-#         'posts': posts,
-#         'brands': brands,
-#         'menu': menu,
-#         'title': 'Главная страница',
-#         'brand_selected': brand_id,
-#     }
-#     return render(request, 'cars/index.html', context=context)
+    
 
 def contact(request):
     return render(request, 'cars/contact.html', {'menu': menu, 'title': 'Обратная связь'})
