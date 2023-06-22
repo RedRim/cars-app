@@ -3,7 +3,6 @@ from django.urls import path, include
 from django.conf.urls.static import static 
 
 from cars_project import settings   
-from cars.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
