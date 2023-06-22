@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 
 from .models import *
 
+
 class AddPostForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -20,5 +21,20 @@ class AddPostForm(forms.Form):
         title = self.cleaned_data['title']
         if len(title) > 200:
             raise ValidationError('Длина превышает 200 слов')
-        
+
         return title
+
+
+class AddCharacteristicsForm(forms.Form):
+    class Meta:
+        model = Characteristics
+        fields = ['year_release',
+                  'body_type',
+                  'engine_capacity',
+                  'engine_power',
+                  'drive',
+                  'fuel_consumption',
+                  'number_of_seats',
+                  'trunk_volume',
+                  'cost',
+                  ]

@@ -26,7 +26,7 @@ class Brands(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('brand', kwargs={'brand_id':self.pk})
+        return reverse('brand', kwargs={'brand_slug':self.slug})
     
 class Characteristics(models.Model):
     year_release = models.IntegerField(verbose_name="Год выпуска")
