@@ -19,7 +19,7 @@ def index(request):
         'brands': brands,
         'menu': menu,
         'title': 'Главная страница',
-        'brand_selected': 0,
+        #'brand_selected': 0,
     }
     return render(request, 'cars/index.html', context=context)
 
