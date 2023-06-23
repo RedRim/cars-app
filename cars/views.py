@@ -73,7 +73,7 @@ class CarsBrand(ListView):
 
 class RegisterUser(DataMixin, CreateView):
     form_class = RegisterUserForm
-    temlate_name = 'cars/register.html'
+    template_name = 'cars/register.html'
     success_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -90,8 +90,7 @@ class RegisterUser(DataMixin, CreateView):
 
 class LoginUser(DataMixin, LoginView):
     form_class = RegisterUserForm
-    temlate_name = 'cars/login.html'
-    success_url = reverse_lazy('home')
+    template_name = 'cars/login.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
