@@ -18,6 +18,11 @@ class Cars(models.Model):
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
     
+    class Meta:
+        verbose_name = 'Статьи про машины'
+        verbose_name_plural = 'Статьи про машины'
+        ordering = ['time_create', 'brand_id']
+    
 class Brands(models.Model):
     name = models.CharField(max_length=30, db_index=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
@@ -27,4 +32,9 @@ class Brands(models.Model):
     
     def get_absolute_url(self):
         return reverse('brand', kwargs={'brand_slug':self.slug})
+    
+    class Meta:
+        verbose_name = 'Марка автомобиля'
+        verbose_name_plural = 'Марки автомобилей'
+        ordering = ['slug']
     
