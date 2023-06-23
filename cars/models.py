@@ -36,6 +36,10 @@ class Brands(models.Model):
     def get_absolute_url(self):
         return reverse('brand', kwargs={'brand_slug':self.slug})
     
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+    
 class CustomUser(AbstractUser):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="user URL")
     photo = models.ImageField(upload_to="photos/profile_picture", verbose_name="Фото", blank=True, null=True)
