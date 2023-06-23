@@ -8,32 +8,41 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<table class="table-page" border=0 cellpadding="0" cellspacing="0">
-<tr><td valign=top>
 {% block mainmenu %}
-		<div class="header">
+		<header>
 			<ul id="mainmenu" class="mainmenu">
-			<li><a href="{% url 'home' %}"><div class="logo">Главная</div></a></li>
+			<li><a href="{% url 'home' %}"><div class="home">Главная</div></a></li>
 {% for m in menu %}
-	{% if not forloop.last %}
 			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
-	{% else %}
-			<li class="last"><a href="{% url m.url_name %}">{{m.title}}</a></li>
-	{% endif %}
 {% endfor %}
+			<li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
 			</ul>
-			<div class="clear"></div>
-		</div>
+		</header>
 {% endblock mainmenu %}
 
-
+<div class="container">
+<div  valign="top" class="left-chapters">
+	<ul id="leftchapters">
+{% if cat_selected == 0 %}
+		<li class="selected">Все категории</li>
+{% else %}
+		<li><a href="{% url 'home' %}">Все категории</a>
+			{% for b in brands %}
+				{% if b.pk == cat_selected %}
+					<li class="selected">{{b.name}}</li>
+				{% else %}
+					<li><a href="{{ b.get_absolute_url }}">{{b.name}}</a></li>		
+				{% endif %}
+			{% endfor %}
+		</li>
+{% endif %}
+	</ul>
+</div>
 
 	<div class="content-text">
 {% block content %}
 {% endblock %}
 	</div>
-
-</td></tr></table>
-<!-- Конец footer'а и страницы -->
+</div>
 </body>
 </html>

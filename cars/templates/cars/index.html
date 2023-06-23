@@ -1,11 +1,12 @@
 {% extends 'cars/base.html' %}
 
 {% block content %}
-<h1>{{title}}</h1>
 <ul>
     {% for p in posts %}
     <li>
-
+        {% if p.photo %}
+	    <p><img class="img-article-left thumb" src="{{p.photo.url}}" alt="Фото"></p>
+        {% endif %}
         <h2>{{ p.brand.name }} {{ p.title }}</h2>
         <p>{{ p.short_content }}</p>  
         <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>

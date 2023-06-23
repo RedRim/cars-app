@@ -25,7 +25,7 @@ class AddPostForm(forms.ModelForm):
         if len(title) > 200:
             raise ValidationError('Длина превышает 200 слов')
         return title
-
+    
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
     email = forms.EmailField(label='Email', widget=forms.TextInput(attrs={'class': 'form-input'}))

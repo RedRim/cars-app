@@ -10,6 +10,7 @@ from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -55,7 +56,7 @@ class ShowPost(DataMixin, DetailView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-class CarsBrand(ListView):
+class CarsBrand(DataMixin, ListView):
     model = Cars
     template_name = "cars/index.html"
     context_object_name = 'posts'
@@ -80,16 +81,16 @@ class RegisterUser(DataMixin, CreateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Регистрация")
         return dict(list(context.items()) + list(c_def.items()))
-    
+
     def form_valid(self, form):
         form.instance.photo = self.request.FILES.get('photo')
         user = form.save()
         login(self.request, user)
         return redirect('home')
-
+    
 
 class LoginUser(DataMixin, LoginView):
-    form_class = RegisterUserForm
+    form_class = LoginUserForm
     template_name = 'cars/login.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
