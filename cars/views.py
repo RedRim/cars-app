@@ -11,6 +11,9 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
 
 class CarsHome(DataMixin, ListView):
     model = Cars
@@ -30,22 +33,15 @@ class AddPage(DataMixin, CreateView):
     form_class = AddPostForm
     template_name = "cars/addpage.html"
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user 
+        return super().form_valid(form)
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Добавление статьи")
         return dict(list(context.items()) + list(c_def.items()))
 
-
-# def show_post(request, post_id):
-#     post = get_object_or_404(Cars, pk=post_id)
-
-#     context = {
-#             'post': post,
-#             'menu': menu,
-#             'title': post.title,
-#         }
-
-#     return render(request, 'cars/post.html', context=context)
 
 class ShowPost(DataMixin, DetailView):
     model = Cars
@@ -86,6 +82,7 @@ class RegisterUser(DataMixin, CreateView):
         return dict(list(context.items()) + list(c_def.items()))
     
     def form_valid(self, form):
+        form.instance.photo = self.request.FILES.get('photo')
         user = form.save()
         login(self.request, user)
         return redirect('home')
