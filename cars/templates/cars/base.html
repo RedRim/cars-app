@@ -9,9 +9,9 @@
 </head>
 <body>
 {% block mainmenu %}
-		<div class="header">
+		<header>
 			<ul id="mainmenu" class="mainmenu">
-			<li><a href="{% url 'home' %}"><div class="logo">Главная</div></a></li>
+			<li><a href="{% url 'home' %}"><div class="home">Главная</div></a></li>
 {% for m in menu %}
 	{% if not forloop.last %}
 			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
@@ -20,18 +20,25 @@
 	{% endif %}
 {% endfor %}
 			</ul>
-			<div class="clear"></div>
-		</div>
+		</header>
 {% endblock mainmenu %}
 
+<div class="container">
 <div  valign="top" class="left-chapters">
 	<ul id="leftchapters">
 {% if cat_selected == 0 %}
 		<li class="selected">Все категории</li>
 {% else %}
-		<li><a href="{% url 'home' %}">Все категории</a></li>
+		<li><a href="{% url 'home' %}">Все категории</a>
+			{% for b in brands %}
+				{% if b.pk == cat_selected %}
+					<li class="selected">{{b.name}}</li>
+				{% else %}
+					<li><a href="{{ b.get_absolute_url }}">{{b.name}}</a></li>		
+				{% endif %}
+			{% endfor %}
+		</li>
 {% endif %}
-
 	</ul>
 </div>
 
@@ -39,7 +46,6 @@
 {% block content %}
 {% endblock %}
 	</div>
-
-<!-- Конец footer'а и страницы -->
+</div>
 </body>
 </html>

@@ -1,8 +1,78 @@
-.logo {
+.container {
+	display: flex;
+  }
+
+.content-text {
+	display: inline-block;
+	margin: 60px 0 0 30px;
+	color: #000;
+	font-size: 20px;
+	font-family: Yandex Sans Display Light;
+	height: 100%;
+	overflow-y: auto;
+	flex-grow: 1;
+}
+.content-text h1 {font-size: 32px;}
+
+header {
+	background: #fde61b;
+	height: 60px;
+	position:  fixed;
+	width: 100%;
+}
+
+.home {
 	margin: 40;
 	/* background: url('../images/logo.png') no-repeat 10px 5px;
 	width: 70px;
 	height: 60px; */
+}
+
+.left-chapters {
+	margin: 40px 0 0 0;
+	background: #eee;
+	border-right: 1px solid #ccc;
+	height: 100vh;
+	float: left;
+	overflow-y: auto;
+}
+.left-chapters ul {
+	display: inline-block;
+	width: 230px;
+	height: 100%;
+	margin: 0;
+	padding: 20px 10px 10px 20px;
+	list-style: none;
+	font-size: 20px;
+	position:  static;
+}
+.left-chapters ul li {
+	margin: 30px 0 0 0;
+	color: #999;
+}
+.left-chapters ul li.selected {color: #0059b2; }
+.left-chapters ul li a {
+	color: #444;
+	text-decoration: none;
+}
+.left-chapters ul li a:hover { color: #CC0000; }
+.left-chapters ul li.share {margin: 60px 0 0 0;}
+.left-chapters ul li.share p {margin: 30px 0 30px 0;}
+.left-chapters ul li.share a {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	margin: 0 20px 0 0;
+}
+.left-chapters ul li.share a.share-yt {
+	width: 100%;
+	height: 30px;
+	background: url('../images/share_yt.png') no-repeat 0 0
+}
+.left-chapters ul li.share a.share-yt:hover {
+	width: 100%;
+	height: 30px;
+	background: url('../images/share_yt.png') no-repeat 0 -30px
 }
 
 html, body {
@@ -21,20 +91,6 @@ a {
 a:hover {
 	color: #CC0000;
 	text-decoration: underline;
-}
-
-img {max-width: 600px; height: auto;}
-
-img.img-article-left {
-	max-width: 300px;
-	height: auto;
-	float: left;
-	padding: 0 10px 10px 0;
-}
-
-img.img-article-left.thumb {
-	max-width: 150px;
-	height: auto;
 }
 
 p.link-read-post {
@@ -73,19 +129,8 @@ ul.list-articles li {
 	border-bottom: 1px solid #ccc;
 }
 
-.table-page {
-	width: 100%;
-	height: 100%;
-	vertical-align: top;
-}
-.table-page tr {height: 100%;}
 
-.clear {clear: both;}
 
-.header {
-	background: #3F4137;
-	height: 60px;
-}
 
 
 
@@ -94,7 +139,7 @@ ul.mainmenu {
 	margin: 0;
 	padding: 0;
 	height: 60px;
-	color: #fdc073;
+	color: #211f1c;
 	font-size: 20px;
 	overflow: hidden;
 }
@@ -106,11 +151,11 @@ ul.mainmenu li.logo {margin: 0;}
 ul.mainmenu li.last {float: right;}
 
 ul.mainmenu li a {
-	color: #fdc073;
+	color: #211f1c;
 	text-decoration: none;
 }
 ul.mainmenu li a:hover {
-	color: #FDA83D;
+	color: #211f1c;
 }
 
 .panelitems {
@@ -163,48 +208,7 @@ div.button {
 	height: 100%;
 }
 
-.left-chapters {
-	margin: 0;
-	background: #eee;
-	border-right: 1px solid #ccc;
-	min-height: 100%;
-}
-.left-chapters ul {
-	width: 230px;
-	min-height: 100%;
-	margin: 0;
-	padding: 20px 10px 10px 20px;
-	list-style: none;
-	font-size: 20px;
-}
-.left-chapters ul li {
-	margin: 30px 0 0 0;
-	color: #999;
-}
-.left-chapters ul li.selected {color: #0059b2; }
-.left-chapters ul li a {
-	color: #444;
-	text-decoration: none;
-}
-.left-chapters ul li a:hover { color: #CC0000; }
-.left-chapters ul li.share {margin: 60px 0 0 0;}
-.left-chapters ul li.share p {margin: 30px 0 30px 0;}
-.left-chapters ul li.share a {
-	display: inline-block;
-	width: 40px;
-	height: 40px;
-	margin: 0 20px 0 0;
-}
-.left-chapters ul li.share a.share-yt {
-	width: 100%;
-	height: 30px;
-	background: url('../images/share_yt.png') no-repeat 0 0
-}
-.left-chapters ul li.share a.share-yt:hover {
-	width: 100%;
-	height: 30px;
-	background: url('../images/share_yt.png') no-repeat 0 -30px
-}
+
 
 .content {
 	padding: 40px 20px 20px 40px;
@@ -263,15 +267,6 @@ ul.content-table li a {
 	text-decoration: none;
 }
 ul.content-table li a:hover {color: #F0711C;}
-
-.content-text {
-	
-	margin: 60px 0 0 30px;
-	color: #000;
-	font-size: 20px;
-	font-family: Yandex Sans Display Light;
-}
-.content-text h1 {font-size: 32px;}
 
 ul.lang-list {
 	list-style: none;

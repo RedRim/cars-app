@@ -59,7 +59,7 @@ class ShowPost(DataMixin, DetailView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-class CarsBrand(ListView):
+class CarsBrand(DataMixin, ListView):
     model = Cars
     template_name = "cars/index.html"
     context_object_name = 'posts'
