@@ -8,8 +8,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<table class="table-page" border=0 cellpadding="0" cellspacing="0">
-<tr><td valign=top>
 {% block mainmenu %}
 		<div class="header">
 			<ul id="mainmenu" class="mainmenu">
@@ -26,14 +24,22 @@
 		</div>
 {% endblock mainmenu %}
 
+<div  valign="top" class="left-chapters">
+	<ul id="leftchapters">
+{% if cat_selected == 0 %}
+		<li class="selected">Все категории</li>
+{% else %}
+		<li><a href="{% url 'home' %}">Все категории</a></li>
+{% endif %}
 
+	</ul>
+</div>
 
 	<div class="content-text">
 {% block content %}
 {% endblock %}
 	</div>
 
-</td></tr></table>
 <!-- Конец footer'а и страницы -->
 </body>
 </html>
