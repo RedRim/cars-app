@@ -98,9 +98,11 @@ class LoginUser(DataMixin, LoginView):
         c_def = self.get_user_context(title="Авторизация")
         return dict(list(context.items()) + list(c_def.items()))
     
-    def get_siccess_url(self):
+    def get_success_url(self):
         return reverse_lazy('home')
     
+def profile(request):
+    HttpResponse("Профиль какого-то человека")    
 
 def logout_user(request):
     logout(request)
