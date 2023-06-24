@@ -6,11 +6,14 @@
 {% for p in posts %}
 <li class="article">
     {% if p.photo %}
-    <p><img class="img-article-left" src="{{ p.photo.url }}" alt="Фото"></p>
+    <p class="link-read-post"><a href="{{ p.get_absolute_url }}"><img class="img-article-left thumb" src="/media/{{ p.photo }}" alt="Фото"></a></p>
     {% endif %}
-    <h2>{{ p.brand.name }} {{ p.title }}</h2>
-    <p>{{ p.short_content }}</p>  
-    <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
+    <h2><a href="{{ p.get_absolute_url }}">{{ p.brand.name }} {{ p.title }}</a></h2>
+    {% if p.is_published == False %}
+    <p class="link-read-post"><a>На проверке</a></p>
+    {% endif %}
+    <p>{{ p.short_content }}</p>
+    
     <hr>
 </li>
 {% endfor %}
