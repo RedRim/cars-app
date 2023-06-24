@@ -111,9 +111,7 @@ class Profile(DataMixin, ListView):
         if self.request.user.slug == self.kwargs['profile_slug']:
             return Cars.objects.filter(author__slug=self.kwargs['profile_slug'])
         return Cars.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=True)
-    
-# def profile(request, profile_slug):
-#     return HttpResponse(f"Профиль какого-то человека с url = {profile_slug}")    
+  
 
 def logout_user(request):
     logout(request)
