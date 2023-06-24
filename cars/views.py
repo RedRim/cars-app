@@ -95,24 +95,24 @@ class LoginUser(DataMixin, LoginView):
     def get_success_url(self):
         return reverse_lazy('home')
     
-# class Profile(DataMixin, ListView):
-    # model = Cars
-    # template_name = "cars/profile.html"
-    # context_object_name = 'posts'
-    # slug_url_kwarg = 'acc_slug'
+class Profile(DataMixin, ListView):
+    model = Cars
+    template_name = "cars/profile.html"
+    context_object_name = 'posts'
+    slug_url_kwarg = 'profile_slug'
 
-    # def get_context_data(self, *, object_list=None, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     c_def = self.get_user_context(title=Cars.author)
-    #     return dict(list(context.items()) + list(c_def.items()))
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        author = self.object_list.first().author.username
+        c_def = self.get_user_context(title=str(author))
+        return dict(list(context.items()) + list(c_def.items()))
 
-    # def get_queryset(self):
-    #     if self.request.user.slug == self.kwargs['acc_slug']:
-    #         return Cars.objects.filter(author__slug=self.kwargs['author_slug'])
-    #     return Cars.objects.filter(author__slug=self.kwargs['author_slug'], is_published=True)
-    
-def profile(request, profile_slug):
-    return HttpResponse(f"Профиль какого-то человека с url = {profile_slug}")    
+
+    def get_queryset(self):
+        if self.request.user.slug == self.kwargs['profile_slug']:
+            return Cars.objects.filter(author__slug=self.kwargs['profile_slug'])
+        return Cars.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=True)
+  
 
 def logout_user(request):
     logout(request)

@@ -1,20 +1,18 @@
 {% extends 'cars/base.html' %}
 
 {% block content %}
-<h1>{{title}}</h1>
+<h1>{{ title }}</h1>
 
-{% for p in post %}
-{% if p.author.get_absolute_url == profile.get_absolute_url %}
+{% for p in posts %}
 <li class="article">
     {% if p.photo %}
-    <p><img class="img-article-left" src="{{p.photo.url}}" alt="Фото"></p>
+    <p><img class="img-article-left" src="{{ p.photo.url }}" alt="Фото"></p>
     {% endif %}
     <h2>{{ p.brand.name }} {{ p.title }}</h2>
     <p>{{ p.short_content }}</p>  
     <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
     <hr>
 </li>
-{% endif %}
 {% endfor %}
 
 {% endblock %}
