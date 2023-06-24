@@ -5,7 +5,7 @@
     {% for p in posts %}
     <li>
         {% if p.photo %}
-	    <p><img class="img-article-left" src="{{p.photo.url}}" alt="Фото"></p>
+        <p><img class="img-article-left thumb" src="/media/{{ p.photo }}" alt="Фото"></p>
         {% endif %}
         <h2>{{ p.brand.name }} {{ p.title }}</h2>
         <p>{{ p.short_content }}</p>  

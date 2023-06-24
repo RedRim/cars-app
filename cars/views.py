@@ -15,7 +15,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-
 class CarsHome(DataMixin, ListView):
     model = Cars
     template_name = "cars/index.html"
@@ -28,7 +27,6 @@ class CarsHome(DataMixin, ListView):
 
     def get_queryset(self):
         return Cars.objects.filter(is_published=True)
-
 
 class AddPage(DataMixin, CreateView):
     form_class = AddPostForm
@@ -43,7 +41,6 @@ class AddPage(DataMixin, CreateView):
         c_def = self.get_user_context(title="Добавление статьи")
         return dict(list(context.items()) + list(c_def.items()))
 
-
 class ShowPost(DataMixin, DetailView):
     model = Cars
     template_name = "cars/post.html"
@@ -54,7 +51,6 @@ class ShowPost(DataMixin, DetailView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['post'])
         return dict(list(context.items()) + list(c_def.items()))
-
 
 class CarsBrand(DataMixin, ListView):
     model = Cars
@@ -70,7 +66,6 @@ class CarsBrand(DataMixin, ListView):
 
     def get_queryset(self):
         return Cars.objects.filter(brand__slug=self.kwargs['brand_slug'], is_published=True)
-
 
 class RegisterUser(DataMixin, CreateView):
     form_class = RegisterUserForm
@@ -88,7 +83,6 @@ class RegisterUser(DataMixin, CreateView):
         login(self.request, user)
         return redirect('home')
     
-
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
     template_name = 'cars/login.html'
@@ -101,21 +95,31 @@ class LoginUser(DataMixin, LoginView):
     def get_success_url(self):
         return reverse_lazy('home')
     
-def profile(request):
-    HttpResponse("Профиль какого-то человека")    
+class Profile(DataMixin, ListView):
+    model = Cars
+    template_name = "cars/profile.html"
+    context_object_name = 'posts'
+    slug_url_kwarg = 'acc_slug'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=Cars.author)
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_queryset(self):
+        if self.request.user.slug == self.kwargs['acc_slug']:
+            return Cars.objects.filter(author__slug=self.kwargs['author_slug'])
+        return Cars.objects.filter(author__slug=self.kwargs['author_slug'], is_published=True)
 
 def logout_user(request):
     logout(request)
     return redirect('login')
 
-
 def contact(request):
     return render(request, 'cars/contact.html', {'menu': menu, 'title': 'Обратная связь'})
 
-
 def about(request):
     return render(request, 'cars/about.html', {'menu': menu, 'title': 'О сайте'})
-
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")
