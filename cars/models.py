@@ -25,6 +25,11 @@ class Cars(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Статьи про машины'
+        verbose_name_plural = 'Статьи про машины'
+        ordering = ['time_create', 'brand_id']
     
 class Brands(models.Model):
     name = models.CharField(max_length=30, db_index=True)
@@ -39,6 +44,11 @@ class Brands(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Марка автомобиля'
+        verbose_name_plural = 'Марки автомобилей'
+        ordering = ['id']
     
 class CustomUser(AbstractUser):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="user URL")
