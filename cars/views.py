@@ -101,6 +101,8 @@ class LoginUser(DataMixin, LoginView):
     def get_success_url(self):
         return reverse_lazy('home')
     
+def profile(request):
+    HttpResponse("Профиль какого-то человека")    
 
 def logout_user(request):
     logout(request)
