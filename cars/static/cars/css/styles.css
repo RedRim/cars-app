@@ -1,3 +1,22 @@
+.article {
+	list-style-type: none;
+}
+
+img {max-width: 600px; height: auto;}
+
+img.img-article-left {
+	max-width: 300px;
+	height: auto;
+	float: left;
+	padding: 0 10px 10px 0;
+}
+
+img.img-article-left.thumb {
+	max-width: 150px;
+	height: auto;
+}
+
+
 .container {
 	display: flex;
   }
@@ -104,13 +123,7 @@ p.link-read-post a {
 	text-decoration: none;
 }
 
-div.article-panel {
-    background: #eee;
-    padding: 5px 10px 5px 10px;
-    box-sizing border-box;
-    overflow: hidden;
-    color: #555;
-}
+
 div.article-panel p.first {
     margin: 0;
     float: left;

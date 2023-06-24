@@ -3,7 +3,7 @@
 {% block content %}
 <ul>
     {% for p in posts %}
-    <li>
+    <li class="article">
         {% if p.photo %}
         <p><img class="img-article-left thumb" src="/media/{{ p.photo }}" alt="Фото"></p>
         {% endif %}
