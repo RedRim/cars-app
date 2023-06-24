@@ -99,7 +99,7 @@ class Profile(DataMixin, ListView):
     model = Cars
     template_name = "cars/profile.html"
     context_object_name = 'posts'
-    slug_url_kwarg = 'acc_slug'
+    slug_url_kwarg = 'profile_slug'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -107,9 +107,10 @@ class Profile(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        if self.request.user.slug == self.kwargs['acc_slug']:
+        if self.request.user.slug == self.kwargs['profile_slug']:
             return Cars.objects.filter(author__slug=self.kwargs['author_slug'])
         return Cars.objects.filter(author__slug=self.kwargs['author_slug'], is_published=True)
+
 def profile(request, profile_slug):
     return HttpResponse(f"Профиль какого-то человека с url = {profile_slug}")    
 
