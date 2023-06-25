@@ -8,5 +8,5 @@
 {% endif %}
 
 {{ post.content }}
-<p>Автор: {{ post.author }}</p>  
+<p>Автор: <a href="{{ post.author.get_absolute_url }}">{{ post.author }}</a></p>  
 {% endblock %}

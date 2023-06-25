@@ -8,17 +8,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-{% block mainmenu %}
+{% block mainmenu %} 
 		<header>
 			<ul id="mainmenu" class="mainmenu">
 			<li><a href="{% url 'home' %}"><div class="home">Главная</div></a></li>
 {% for m in menu %}
 			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
 {% endfor %}
+{% if request.user.is_authenticated %}
+			<li><a href="{% url 'addpage' %}">Добавить статью</a></li>
+{% endif %}
+{% if request.user.is_authenticated %}
+			<li class="last"><a href="{{user.get_absolute_url}}"><img class="user-photo">{{ user.photo }}{{user.username}}</a> | <a href="{% url 'logout' %}">Выйти</a></li>
+{% else %}
 			<li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
+{% endif %}
 			</ul>
 		</header>
 {% endblock mainmenu %}
+
 
 <div class="container">
 <div  valign="top" class="left-chapters">
