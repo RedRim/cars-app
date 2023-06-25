@@ -106,8 +106,7 @@ class Profile(DataMixin, ListView):
         author = f"{self.object_list.first().author.last_name} {self.object_list.first().author.first_name}"
         c_def = self.get_user_context(title=author)
         return dict(list(context.items()) + list(c_def.items()))
-
-
+    
     def get_queryset(self):
         if self.request.user.slug == self.kwargs['profile_slug']:
             return Cars.objects.filter(author__slug=self.kwargs['profile_slug'])
