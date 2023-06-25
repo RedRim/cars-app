@@ -103,8 +103,8 @@ class Profile(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        author = self.object_list.first().author.username
-        c_def = self.get_user_context(title=str(author))
+        author = f"{self.object_list.first().author.last_name} {self.object_list.first().author.first_name}"
+        c_def = self.get_user_context(title=author)
         return dict(list(context.items()) + list(c_def.items()))
 
 
@@ -112,7 +112,20 @@ class Profile(DataMixin, ListView):
         if self.request.user.slug == self.kwargs['profile_slug']:
             return Cars.objects.filter(author__slug=self.kwargs['profile_slug'])
         return Cars.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=True)
-  
+    
+class Modering(DataMixin, ListView):
+    model = Cars
+    template_name = "cars/moder.html"
+    context_object_name = 'posts'
+    slug_url_kwarg = 'moder_slug'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Проверка статей")
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_queryset(self):
+        return Cars.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=False)
 
 def logout_user(request):
     logout(request)

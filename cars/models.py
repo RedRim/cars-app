@@ -13,7 +13,7 @@ class Cars(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
     brand = models.ForeignKey('Brands', on_delete=models.PROTECT, verbose_name="Марка")
-    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
+    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор")
 
     def __str__(self):
         return self.title
@@ -43,6 +43,7 @@ class Brands(models.Model):
 class CustomUser(AbstractUser):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="user URL")
     photo = models.ImageField(upload_to="photos/profile_picture", verbose_name="Фото", blank=True, null=True)
+    is_moder = models.BooleanField()
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.username)
