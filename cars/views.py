@@ -126,6 +126,12 @@ class Modering(DataMixin, ListView):
     def get_queryset(self):
         return Cars.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=False)
 
+def toggle_is_published(request, post_slug):
+    post = get_object_or_404(Cars, slug=post_slug)
+    post.is_published = True
+    post.save()
+    return redirect('post', post_slug=post.slug)
+
 def logout_user(request):
     logout(request)
     return redirect('login')

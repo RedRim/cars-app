@@ -11,9 +11,9 @@ class Cars(models.Model):
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото", blank=True)
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
-    is_published = models.BooleanField(default=True, verbose_name="Публикация")
+    is_published = models.BooleanField(default=False, verbose_name="Публикация")
     brand = models.ForeignKey('Brands', on_delete=models.PROTECT, verbose_name="Марка")
-    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор")
+    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
 
     def __str__(self):
         return self.title
