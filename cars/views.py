@@ -106,8 +106,7 @@ class Profile(DataMixin, ListView):
         author = f"{self.object_list.first().author.last_name} {self.object_list.first().author.first_name}"
         c_def = self.get_user_context(title=author)
         return dict(list(context.items()) + list(c_def.items()))
-
-
+    
     def get_queryset(self):
         if self.request.user.slug == self.kwargs['profile_slug']:
             return Cars.objects.filter(author__slug=self.kwargs['profile_slug'])
@@ -124,7 +123,7 @@ class Modering(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        return Cars.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=False)
+        return Cars.objects.filter(is_published=False)
 
 def toggle_is_published(request, post_slug):
     post = get_object_or_404(Cars, slug=post_slug)
@@ -137,7 +136,18 @@ def logout_user(request):
     return redirect('login')
 
 def contact(request):
-    return render(request, 'cars/contact.html', {'menu': menu, 'title': 'Обратная связь'})
+    if (request.method == 'POST'):
+        form = FeedbackMessageForm(request.POST)
+        if form.is_valid():
+            try:
+                form.instance.author = request.user
+                form.save()
+                return redirect('home')
+            except:
+                form.add_error(None, 'Ошибка добавления поста')
+    else:
+        form = FeedbackMessageForm()
+    return render(request, 'cars/contact.html', {'form': form, 'menu': menu, 'title': 'Обратная связь'})
 
 def about(request):
     return render(request, 'cars/about.html', {'menu': menu, 'title': 'О сайте'})

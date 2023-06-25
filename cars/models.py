@@ -55,7 +55,7 @@ def get_default_photo():
     
 class CustomUser(AbstractUser):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="user URL")
-    photo = models.ImageField(upload_to="photos/profile_picture", verbose_name="Фото", blank=True, default=get_default_photo)
+    photo = models.ImageField(upload_to="photos/profile_picture", verbose_name="Фото", blank=True, null=True)
     is_moder = models.BooleanField(default=False)
 
     def get_default_photo():

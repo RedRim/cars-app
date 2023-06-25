@@ -2,10 +2,12 @@
 	list-style-type: none;
 }
 
-img {max-width: 600px; height: auto;}
+
+
+img {width: 300px; height: auto;}
 
 img.img-article-left {
-	max-width: 300px;
+	width: 300px;
 	height: auto;
 	float: left;
 	padding: 0 10px 10px 0;
@@ -14,8 +16,14 @@ img.img-article-left {
 img.img-article-left.thumb {
 	max-width: 150px;
 	height: auto;
+	float: left;
 }
 
+img.user-photo {
+	width: 20px;
+	height: auto;
+	float: right;
+}
 
 .container {
 	display: flex;
@@ -104,11 +112,11 @@ html, body {
 }
 
 a {
-	color: #0059b2;
+	color: #000000;
 	text-decoration: none;
 }
 a:hover {
-	color: #CC0000;
+	color: #000000;
 	text-decoration: underline;
 }
 
@@ -118,8 +126,7 @@ p.link-read-post {
 p.link-read-post a {
 	padding: 10px;
 	min-width: 100px;
-	background: #333671;
-	color: #fff;
+	color: #ff0000;
 	text-decoration: none;
 }
 
