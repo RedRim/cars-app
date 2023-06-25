@@ -17,6 +17,11 @@ img.img-article-left.thumb {
 	float: left;
 }
 
+img.user-photo {
+	width: 20px;
+	height: auto;
+	float: right;
+}
 
 .container {
 	display: flex;
