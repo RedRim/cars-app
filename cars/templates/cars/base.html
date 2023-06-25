@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-{% block mainmenu %} 
+{% block mainmenu %}
 		<header>
 			<ul id="mainmenu" class="mainmenu">
 			<li><a href="{% url 'home' %}"><div class="home">Главная</div></a></li>
@@ -18,6 +18,10 @@
 {% if request.user.is_authenticated %}
 			<li><a href="{% url 'addpage' %}">Добавить статью</a></li>
 {% endif %}
+{% if request.user.is_authenticated and request.user.is_moder %}
+			<li><a href="{% url 'modering' %}">Проверить статью</a></li>
+{% endif %}
+
 {% if request.user.is_authenticated %}
 			<li class="last"><a href="{{user.get_absolute_url}}"><img class="user-photo">{{ user.photo }}{{user.username}}</a> | <a href="{% url 'logout' %}">Выйти</a></li>
 {% else %}

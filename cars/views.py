@@ -116,7 +116,6 @@ class Modering(DataMixin, ListView):
     model = Cars
     template_name = "cars/moder.html"
     context_object_name = 'posts'
-    slug_url_kwarg = 'moder_slug'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -124,7 +123,13 @@ class Modering(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        return Cars.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=False)
+        return Cars.objects.filter(is_published=False)
+
+def toggle_is_published(request, post_slug):
+    post = get_object_or_404(Cars, slug=post_slug)
+    post.is_published = True
+    post.save()
+    return redirect('post', post_slug=post.slug)
 
 def logout_user(request):
     logout(request)
