@@ -123,7 +123,7 @@ class Modering(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        return Cars.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=False)
+        return Cars.objects.filter(is_published=False)
 
 def logout_user(request):
     logout(request)

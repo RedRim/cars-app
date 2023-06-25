@@ -49,16 +49,13 @@ class Brands(models.Model):
         verbose_name = 'Марка автомобиля'
         verbose_name_plural = 'Марки автомобилей'
         ordering = ['id']
-<<<<<<< HEAD
-=======
 
 def get_default_photo():
     return 'cars/static/cars/images/default_photo.avif'
->>>>>>> 692f7ee6b08205a513b42b5b0d7ba76b3428c123
     
 class CustomUser(AbstractUser):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="user URL")
-    photo = models.ImageField(upload_to="photos/profile_picture", verbose_name="Фото", blank=True, default=get_default_photo)
+    photo = models.ImageField(upload_to="photos/profile_picture", verbose_name="Фото", blank=True, null=True)
     is_moder = models.BooleanField(default=False)
 
     def get_default_photo():
