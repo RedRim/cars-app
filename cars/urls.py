@@ -14,6 +14,7 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('profile/<slug:profile_slug>/',Profile.as_view(), name='profile'),
     path('modering/', Modering.as_view(), name='modering'),
+    path('post/toggle_published/<slug:post_slug>/', toggle_is_published, name='toggle_is_published'),
 ]
 
 handler404 = pageNotFound
