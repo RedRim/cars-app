@@ -13,6 +13,7 @@ urlpatterns = [
     path('login/', LoginUser.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
     path('profile/<slug:profile_slug>/',Profile.as_view(), name='profile'),
+    path('modering/', Modering.as_view(), name='modering'),
 ]
 
 handler404 = pageNotFound

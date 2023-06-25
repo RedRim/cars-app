@@ -117,7 +117,6 @@ class Modering(DataMixin, ListView):
     model = Cars
     template_name = "cars/moder.html"
     context_object_name = 'posts'
-    slug_url_kwarg = 'moder_slug'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
