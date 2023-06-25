@@ -110,7 +110,18 @@ def logout_user(request):
 
 
 def contact(request):
-    return render(request, 'cars/contact.html', {'menu': menu, 'title': 'Обратная связь'})
+    if (request.method == 'POST'):
+        form = FeedbackMessageForm(request.POST)
+        if form.is_valid():
+            try:
+                form.instance.author = request.user
+                form.save()
+                return redirect('home')
+            except:
+                form.add_error(None, 'Ошибка добавления поста')
+    else:
+        form = FeedbackMessageForm()
+    return render(request, 'cars/contact.html', {'form': form, 'menu': menu, 'title': 'Обратная связь'})
 
 
 def about(request):
