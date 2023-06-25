@@ -66,3 +66,16 @@ class CustomUser(AbstractUser):
     def get_absolute_url(self):
         return reverse('profile', kwargs={'profile_slug':self.slug})
     
+class FeedbackMessage(models.Model):
+    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
+    short_content = models.CharField(max_length=50, verbose_name="Краткое описание")
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
+    content = models.TextField(blank=True, verbose_name="Текст обращения")
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name = 'Обращение'
+        verbose_name_plural = 'Обращения'
+        ordering = ['time_create', 'author_id']
