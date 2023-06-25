@@ -9,6 +9,7 @@
         {% endif %}
         <h2><a href="{{ p.get_absolute_url }}">{{ p.brand.name }} {{ p.title }}</a></h2>
         <p>{{ p.short_content }}</p>  
+        <p class="likes"><button>{{ p.likes_amount}}</button></p>
         <hr>
     </li>
     {% endfor %}
