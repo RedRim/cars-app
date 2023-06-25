@@ -144,6 +144,12 @@ def contact(request):
         form = FeedbackMessageForm()
     return render(request, 'cars/contact.html', {'form': form, 'menu': menu, 'title': 'Обратная связь'})
 
+def add_like(request, post_slug):
+    post = get_object_or_404(Cars, slug=post_slug)
+    post.likes_amount += 1
+    post.save()
+    return redirect('post', post_slug=post.slug)
+
 def about(request):
     return render(request, 'cars/about.html', {'menu': menu, 'title': 'О сайте'})
 
