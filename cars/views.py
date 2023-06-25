@@ -114,6 +114,7 @@ def contact(request):
         form = FeedbackMessageForm(request.POST)
         if form.is_valid():
             try:
+                form.instance.author = request.user
                 form.save()
                 return redirect('home')
             except:
