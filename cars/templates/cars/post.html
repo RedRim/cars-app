@@ -12,7 +12,7 @@
     {% if request.user.is_authenticated and request.user.is_moder and post.is_published == False %}
     <form method="POST" action="{% url 'toggle_is_published' post.slug %}">
         {% csrf_token %}
-        <button type="submit">Изменить статус публикации</button>
+        <button type="submit">Опубликовать</button>
     </form>
 {% endif %}</p>
 {% endblock %}
