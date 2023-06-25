@@ -13,7 +13,7 @@ class Cars(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
     is_published = models.BooleanField(default=True, verbose_name="Публикация")
     brand = models.ForeignKey('Brands', on_delete=models.PROTECT, verbose_name="Марка")
-    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
+    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор")
 
     def __str__(self):
         return self.title
