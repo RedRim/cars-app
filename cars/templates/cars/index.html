@@ -1,6 +1,16 @@
 {% extends 'cars/base.html' %}
 
 {% block content %}
+<form action="{% url 'home' %}" method="GET">
+    <select id="brand-filter" name="brand">
+        <option value="">Выберите фирму</option>
+        {% for brand in brands %}
+            <option value="{{ brand.slug }}" {% if request.GET.brand == brand.slug %} selected {% endif %}>{{ brand.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Применить</button>
+</form>
+
 <ul>
     {% for p in posts %}
     <li class="article">
@@ -14,4 +24,3 @@
     {% endfor %}
 </ul>
 {% endblock %}
-

@@ -423,3 +423,71 @@ img.img-article-left.thumb {
 	max-width: 150px;
 	height: auto;
 }
+
+select {
+	cursor: pointer;
+	padding: 5px;
+}
+
+/* Стили для формы фильтрации */
+form {
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+  }
+  
+  label {
+	margin-right: 10px;
+	font-weight: bold;
+  }
+  
+  select {
+	padding: 5px;
+	border-radius: 4px;
+	border: 1px solid #ccc;
+  }
+  
+  button[type="submit"] {
+	padding: 5px 10px;
+	border: none;
+	background-color: #007bff;
+	color: #fff;
+	border-radius: 4px;
+	cursor: pointer;
+  }
+  
+  /* Стили для списка записей */
+  ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+  }
+  
+  .article {
+	margin-bottom: 20px;
+  }
+  
+  .link-read-post a {
+	text-decoration: none;
+  }
+  
+  .img-article-left {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	margin-right: 10px;
+  }
+  
+  h2 {
+	margin-top: 0;
+  }
+  
+  p {
+	margin-bottom: 10px;
+  }
+  
+  hr {
+	border: none;
+	border-top: 1px solid #ccc;
+  }
+  

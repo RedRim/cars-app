@@ -20,13 +20,22 @@ class CarsHome(DataMixin, ListView):
     template_name = "cars/index.html"
     context_object_name = 'posts'
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Главная страница")
+        brands = Brands.objects.all()
+        context['brands'] = brands
+
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        return Cars.objects.filter(is_published=True)
+        queryset = super().get_queryset()
+
+        brand_slug = self.request.GET.get('brand')
+        if brand_slug:
+            queryset = queryset.filter(brand__slug=brand_slug)
+
+        return queryset.order_by('-time_create')
 
 class AddPage(DataMixin, CreateView):
     form_class = AddPostForm
