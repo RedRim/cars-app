@@ -40,6 +40,7 @@ header {
 }
 
 .triangle-right {
+	display: block;
 	margin: 5px;
 	width: 0;
 	height: 0;
@@ -58,6 +59,12 @@ header {
 	border-top-right-radius: 20px;
 	border-bottom-right-radius: 20px;
 	left: -630px;
+	transition: all 0.5s ease;
+}
+
+.filters:hover {
+	left: 28px;
+	transition: all 0.5s ease;
 }
 
 ul.mainmenu {
