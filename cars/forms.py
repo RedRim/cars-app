@@ -35,8 +35,8 @@ class RegisterUserForm(UserCreationForm):
     photo = forms.ImageField(label='Фото', required=False)
 
     class Meta:
-        model = CustomUser
         fields = ('first_name', 'last_name', 'username', 'password1', 'password2', 'photo')
+        model = CustomUser
 
 
 class LoginUserForm(AuthenticationForm):

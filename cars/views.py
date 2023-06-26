@@ -112,12 +112,18 @@ class Profile(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        author = f"{self.object_list.first().author.last_name} {self.object_list.first().author.first_name}"
+        if not self.object_list:
+            context['empty_message'] = "Список статей пуст"
+            author = f"{self.request.user.last_name} {self.request.user.first_name}"
+        else:
+            author = f"{self.object_list.first().author.last_name} {self.object_list.first().author.first_name}"
         c_def = self.get_user_context(title=author)
-        return dict(list(context.items()) + list(c_def.items()))
+        context.update(c_def)
+        return context
+    
     
     def get_queryset(self):
-        if self.request.user.slug == self.kwargs['profile_slug']:
+        if self.request.user.is_authenticated and self.request.user.slug == self.kwargs['profile_slug']:
             return Cars.objects.filter(author__slug=self.kwargs['profile_slug'])
         return Cars.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=True)
     
