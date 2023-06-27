@@ -52,7 +52,7 @@ class EditProfileForm(forms.ModelForm):
         for field in self.fields:
             self.fields[field].widget.attrs.update({
                 'class': 'form-control',
-                'autocomplete': 'off'
+                'autocomplete': 'off',
                 'autocomplete': 'new-password'
             })
 
