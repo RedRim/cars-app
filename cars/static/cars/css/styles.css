@@ -123,7 +123,7 @@ ul.mainmenu li a:hover {
 	height: 200px;
 	background-color: #f6f4f4;
 	border-radius: 40px;
-	float: right;
+	float: left;
 	margin: 15px 35px 15px 0;
 	transition: all transform 0.2s;
 }
@@ -135,7 +135,7 @@ ul.mainmenu li a:hover {
 	height: 210px;
 	background-color: #f6f4f4;
 	border-radius: 40px;
-	float: right;
+	float: left;
 	margin: 10px 35px 10px 0;
 	transition: all transform 0.5s;
 }
@@ -164,9 +164,7 @@ ul.mainmenu li a:hover {
 	transition: all transform 0.5s;
 }
 
-
-
-.title {
+.title_left {
 	margin: 20px 0 0 30px ;
 	font-family: sans-serif;
 	font-size: 60px;
@@ -176,7 +174,25 @@ ul.mainmenu li a:hover {
 	transition: all transform 0.5s;
 }
 
-.short_content {
+.short_content_left {
+	margin: 100px 30px 0 322px;
+	font-family: "Trebuchet MS";
+	font-weight: bold;
+	color: #0aabea;
+	text-decoration: none;
+}
+
+.title_right {
+	margin: 20px 0 0 30px ;
+	font-family: sans-serif;
+	font-size: 60px;
+	font-weight: bold;
+	float: left;
+	text-transform: uppercase;
+	transition: all transform 0.5s;
+}
+
+.short_content_right {
 	margin: 100px 350px 0 30px;
 	font-family: "Trebuchet MS";
 	font-weight: bold;
@@ -187,18 +203,18 @@ ul.mainmenu li a:hover {
 
 img {width: 300px; height: auto;}
 
-img.img-article-left {
+img.img_article_left {
 	height: 100%;
 	width: 300px;
-	float: right;
+	float: left;
 	margin: 0 -5px;
-	border-top-right-radius: 30px;
-	border-bottom-right-radius: 30px;
+	border-top-left-radius: 30px;
+	border-bottom-left-radius: 30px;
 	object-fit: cover;
 	overflow: hidden;
 }
 
-img.img-article-right {
+img.img_article_right {
 	height: 100%;
 	width: 300px;
 	float: right;

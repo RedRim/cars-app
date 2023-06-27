@@ -21,20 +21,20 @@
     <a class="article" href="{{ p.get_absolute_url }}">
         <li class="left">
             {% if p.photo %}
-            <img class="img-article-left" src="/media/{{ p.photo }}" alt="Фото">
+            <img class="img_article_left" src="/media/{{ p.photo }}" alt="Фото">
             {% endif %}
-            <p class="title">{{ p.brand.name }} {{ p.title }}</p>
-            <p class="short_content">{{ p.short_content }}</p>
+            <p class="title_left">{{ p.brand.name }} {{ p.title }}</p>
+            <p class="short_content_left">{{ p.short_content }}</p>
         </li>
     </a>
     {% else %}
     <a class="article" href="{{ p.get_absolute_url }}">
         <li class="right">
             {% if p.photo %}
-            <img class="img-article-right" src="/media/{{ p.photo }}" alt="Фото">
+            <img class="img_article_right" src="/media/{{ p.photo }}" alt="Фото">
             {% endif %}
-            <p class="title">{{ p.brand.name }} {{ p.title }}</p>
-            <p class="short_content">{{ p.short_content }}</p>
+            <p class="title_right">{{ p.brand.name }} {{ p.title }}</p>
+            <p class="short_content_right">{{ p.short_content }}</p>
         </li>
     </a>
     {% endif %}
