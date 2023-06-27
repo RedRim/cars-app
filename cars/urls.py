@@ -12,7 +12,9 @@ urlpatterns = [
     path('register/', RegisterUser.as_view(), name='register'),
     path('login/', LoginUser.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
-    path('profile/<slug:profile_slug>/',Profile.as_view(), name='profile'),
+    path('profile/<slug:profile_slug>/', Profile.as_view(), name='profile'),
+    # path('profile/edit/', EditProfile.as_view(), name='editprofile'),
+    path('profile/edit/', edit_profile, name='editprofile'),
     path('modering/', Modering.as_view(), name='modering'),
     path('post/toggle_published/<slug:post_slug>/', toggle_is_published, name='toggle_is_published'),
 ]

@@ -5,14 +5,14 @@ from .models import *
 from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 
 
 class CarsHome(DataMixin, ListView):
@@ -91,6 +91,31 @@ class RegisterUser(DataMixin, CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('home')
+
+# class EditProfile(DataMixin, LoginRequiredMixin, UpdateView):
+#     model = CustomUser
+#     form_class = EditProfileForm
+#     template_name = 'cars/edit_profile.html'
+#     success_url = 'home'
+
+#     def get_object(self, queryset=None):
+#         return self.request.user
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         c_def = self.get_user_context(title="Редактирование профиля", form=EditProfileForm)
+#         context.update(c_def)
+#         return context
+
+#     def form_valid(self, form):
+#         response = super().form_valid(form)
+#         form.instance.photo = self.request.FILES.get('photo')
+#         self.object.save()
+#         return response
+    
+def edit_profile(request):
+    return render(request, 'edit_profile.html')
+
     
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
