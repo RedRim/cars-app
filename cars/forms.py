@@ -39,6 +39,10 @@ class RegisterUserForm(UserCreationForm):
         model = CustomUser
 
 class EditProfileForm(forms.ModelForm):
+    old_password = forms.CharField(label='Старый пароль', widget=forms.PasswordInput)
+    new_password1 = forms.CharField(label='Новый пароль', widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label='Повторите новый пароль', widget=forms.PasswordInput)
+
     class Meta:
         model = CustomUser
         fields = ('first_name', 'last_name', 'username', 'photo')
@@ -58,6 +62,9 @@ class LoginUserForm(AuthenticationForm):
 
 class FeedbackMessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        self.fields['password'].widget.attrs.update({
+        'autocomplete': 'new-password'
+        })
         super().__init__(*args, **kwargs)
 
     class Meta:

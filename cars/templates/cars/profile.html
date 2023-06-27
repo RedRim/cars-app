@@ -3,7 +3,7 @@
 {% block content %}
 <h1>{{ title }}</h1>
 {% if request.user.is_authenticated and user.get_absolute_url == request.path %}
-<a href="{% url 'edit_profile' %}"><button type="submit">Изменить</button></a>
+<a href="{% url 'editprofile' %}"><button type="submit">Изменить</button></a>
 {% endif %}
 
 {% if empty_message %}
@@ -25,6 +25,5 @@
   {% endfor %}
 </ul>
 {% endif %}
-<a href="{% url 'editprofile' %}" class="btn btn-sm btn-primary">Редактировать профиль</a>
 
 {% endblock %}
