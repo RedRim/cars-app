@@ -5,14 +5,16 @@ from .models import *
 from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
 
 import random
 
@@ -98,6 +100,68 @@ class RegisterUser(DataMixin, CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('home')
+
+class EditProfile(DataMixin, LoginRequiredMixin, UpdateView):
+    model = CustomUser
+    form_class = EditProfileForm
+    template_name = 'cars/edit_profile.html'
+    success_url = reverse_lazy('home')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = EditProfileForm(instance=self.request.user)
+        c_def = self.get_user_context(title="Редактирование профиля", form=form)
+        context.update(c_def)
+        return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        form.instance.photo = self.request.FILES.get('photo')
+        self.object = form.save()
+        
+        # Обработка изменения пароля
+        old_password = form.cleaned_data['old_password']
+        new_password = form.cleaned_data['new_password1']
+        
+        if self.request.user.check_password(old_password):
+            self.request.user.set_password(new_password)
+            self.request.user.save()
+        
+        return response
+
+
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        password_form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid() and password_form.is_valid():
+            return self.form_valid(form, password_form)
+        else:
+            return self.form_invalid(form, password_form)
+
+    def form_valid(self, form, password_form):
+        response = super().form_valid(form)
+        form.instance.photo = self.request.FILES.get('photo')
+        self.object.save()
+        # Обработка изменения пароля
+        old_password = password_form.cleaned_data['old_password']
+        new_password = password_form.cleaned_data['new_password1']
+        if self.request.user.check_password(old_password):
+            self.request.user.set_password(new_password)
+            self.request.user.save()
+        return response
+
+    def form_invalid(self, form, password_form):
+        return self.render_to_response(self.get_context_data(form=form, password_form=password_form))
+
+
+    
+# def edit_profile(request):
+#     return render(request, 'cars/edit_profile.html')
+
     
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
