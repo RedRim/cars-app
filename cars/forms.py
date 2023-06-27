@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 
-from .models import CustomUser, Cars, FeedbackMessage
+from .models import CustomUser, Cars, FeedbackMessage, Comment
 
 
 class AddPostForm(forms.ModelForm):
@@ -53,6 +53,7 @@ class EditProfileForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({
                 'class': 'form-control',
                 'autocomplete': 'off'
+                'autocomplete': 'new-password'
             })
 
 
@@ -61,16 +62,18 @@ class LoginUserForm(AuthenticationForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
 
 class FeedbackMessageForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        self.fields['password'].widget.attrs.update({
-        'autocomplete': 'new-password'
-        })
-        super().__init__(*args, **kwargs)
-
     class Meta:
         model = FeedbackMessage
         fields = ['short_content', 'content']
         widgets = {
             'short_content': forms.TextInput(attrs={'class': 'form-input'}),
+            'content': forms.Textarea(attrs={'cols': 60, 'rows': 10})
+        }
+
+class AddCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
             'content': forms.Textarea(attrs={'cols': 60, 'rows': 10})
         }

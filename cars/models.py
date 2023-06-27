@@ -14,6 +14,7 @@ class Cars(models.Model):
     is_published = models.BooleanField(default=False, verbose_name="Публикация")
     brand = models.ForeignKey('Brands', on_delete=models.PROTECT, verbose_name="Марка")
     author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
+    comments = models.ManyToManyField('Comment', verbose_name="Комментарии", blank=True)
 
     def __str__(self):
         return self.title
@@ -85,3 +86,16 @@ class FeedbackMessage(models.Model):
         verbose_name = 'Обращение'
         verbose_name_plural = 'Обращения'
         ordering = ['time_create', 'author_id']
+
+class Comment(models.Model):
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
+    time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
+    content = models.TextField(blank=True, verbose_name="Комментарий", null=True)
+
+    
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ['time_create', 'content']
