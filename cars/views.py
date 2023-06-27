@@ -36,7 +36,7 @@ class CarsHome(DataMixin, ListView):
         brand_slug = self.request.GET.get('brand')
         if brand_slug:
             queryset = queryset.filter(brand__slug=brand_slug)
-
+        queryset = queryset.filter(is_published=True)
         return queryset.order_by('-time_create')
 
 class AddPage(DataMixin, CreateView):
