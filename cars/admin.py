@@ -18,8 +18,12 @@ class FeedbackMessageAdmin(admin.ModelAdmin):
   list_display = ('id', 'author', 'short_content', 'content')
   list_display_links = ('id', 'author')
   search_fields = ('short_conent', 'auhtor')
+
+class ComentsAdmin(admin.ModelAdmin):
+  list_display = ('id', 'time_create', 'content')
   
 admin.site.register(Cars, CarsAdmin)
 admin.site.register(Brands, BrandAdmin)
 admin.site.register(CustomUser)
 admin.site.register(FeedbackMessage, FeedbackMessageAdmin)
+admin.site.register(Comment, ComentsAdmin)
