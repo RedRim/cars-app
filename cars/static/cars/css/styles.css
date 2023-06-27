@@ -487,8 +487,3 @@ img.img-article-left.thumb {
 	max-width: 150px;
 	height: auto;
 }
-
-form {
-    display: flex !important;
-    flex-direction: column !important;
-}
