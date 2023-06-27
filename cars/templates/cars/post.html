@@ -4,19 +4,34 @@
 <h1>{{post.title}}</h1>
 
 {% if post.photo %}
-<p><img class="img-article-left thumb" src="{{ post.photo.url }}"></p>
+    <p><img class="img-article-left thumb" src="{{ post.photo.url }}"></p>
 {% endif %}
 
-{{ post.content }}
-<p>Автор: <a href="{{ post.author.get_absolute_url }}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
-
+<p>{{ post.content }}</p>
+<p> Автор: <a href="{{ post.author.get_absolute_url }}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
     <!-- кнопка модерации -->
     {% if request.user.is_authenticated and request.user.is_moder and post.is_published == False %}
     <form method="POST" action="{% url 'toggle_is_published' post.slug %}">
         {% csrf_token %}
         <button type="submit">Опубликовать</button>
     </form>
-
-    
-{% endif %}</p>
+    {% endif %}
+</p>
+    <!-- Создание комментария -->
+{% if request.user.is_authenticated and post.is_published == True %}
+    <form method='POST', action="{% url 'create_comment' post.slug %}", enctype="multipart/form-data">
+        <div class="form-error">{{ form.non_field_errors }}</div>
+        {% csrf_token %}
+        {% for f in form %}
+            <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+            <div class="form-error">{{ f.errors }}</div>
+        {% endfor %}
+        <button type="submit">Комментировать</button>
+{% endif %}
+    <!-- Блок с комментариями пользователей -->
+<p>Комментариев: {{post.comments.count}}</p>
+{% for c in post.comments.all %}
+    <h3><a href="{{ post.author.get_absolute_url }}">{{ c.author.first_name }} {{ c.author.last_name }}</a></h3>
+    <p>{{c.content}}</p>
+{% endfor %}
 {% endblock %}

@@ -15,6 +15,7 @@ urlpatterns = [
     path('profile/<slug:profile_slug>/',Profile.as_view(), name='profile'),
     path('modering/', Modering.as_view(), name='modering'),
     path('post/toggle_published/<slug:post_slug>/', toggle_is_published, name='toggle_is_published'),
+    path('post/createcomment/<slug:post_slug>/', create_comment, name='create_comment')
 ]
 
 handler404 = pageNotFound

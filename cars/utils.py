@@ -1,4 +1,5 @@
 from .models import *
+from .forms import AddCommentForm
 
 menu = [{'title': 'О Сайте', 'url_name': 'about'},
         {'title': 'Обратная связь', 'url_name': 'contact'},
@@ -13,4 +14,3 @@ class DataMixin:
         if 'brand_selected' not in kwargs:
             context['brand_selected'] = 0
         return context
-    

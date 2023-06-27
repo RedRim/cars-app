@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+import random
+
 
 class CarsHome(DataMixin, ListView):
     model = Cars
@@ -51,14 +53,19 @@ class AddPage(DataMixin, CreateView):
         return dict(list(context.items()) + list(c_def.items()))
 
 class ShowPost(DataMixin, DetailView):
+    form_class = AddCommentForm
     model = Cars
     template_name = "cars/post.html"
     slug_url_kwarg = 'post_slug'
     context_object_name = 'post'
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user 
+        return super().form_valid(form)
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title=context['post'])
+        c_def = self.get_user_context(title='slug', form=AddCommentForm)
         return dict(list(context.items()) + list(c_def.items()))
 
 class CarsBrand(DataMixin, ListView):
@@ -144,6 +151,21 @@ def toggle_is_published(request, post_slug):
     post = get_object_or_404(Cars, slug=post_slug)
     post.is_published = True
     post.save()
+    return redirect('post', post_slug=post.slug)
+
+def create_comment(request, post_slug):
+    post = get_object_or_404(Cars, slug=post_slug)
+    if(request.method == 'POST'):
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            form.instance.author = request.user
+            comment = form.instance
+            comment.slug = str(random.random()) + str(comment.author.first_name)
+            print(comment.content)
+            comment.save()
+            post.comments.add(comment)
+            post.save()
+            return redirect('post', post_slug=post.slug)
     return redirect('post', post_slug=post.slug)
 
 def logout_user(request):
