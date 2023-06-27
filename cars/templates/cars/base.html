@@ -10,46 +10,31 @@
 <body>
 {% block mainmenu %}
 		<header>
+			<a href="{% url 'home' %}" class="menu-button"></a></li>
 			<ul id="mainmenu" class="mainmenu">
-			<li><a href="{% url 'home' %}"><div class="home">Главная</div></a></li>
-{% for m in menu %}
-			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
-{% endfor %}
-{% if request.user.is_authenticated %}
-			<li><a href="{% url 'addpage' %}">Добавить статью</a></li>
-{% endif %}
-{% if request.user.is_authenticated and request.user.is_moder %}
-			<li><a href="{% url 'modering' %}">Проверить статью</a></li>
-{% endif %}
-
-{% if request.user.is_authenticated %}
-			<li class="last"><a href="{{user.get_absolute_url}}"><img class="user-photo" src="/media/{{ user.photo }}">{{user.username}}</a> | <a href="{% url 'logout' %}">Выйти</a></li>
-{% else %}
-			<li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
-{% endif %}
-			</ul>
+				<li><a href="{% url 'home' %}">Главная</a></li>
+	{% for m in menu %}
+				<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+	{% endfor %}
+	{% if request.user.is_authenticated %}
+				<li><a href="{% url 'addpage' %}">Добавить статью</a></li>
+	{% endif %}
+	{% if request.user.is_authenticated and request.user.is_moder %}
+				<li><a href="{% url 'modering' %}">Проверить статью</a></li>
+	{% endif %}
+	
+	{% if request.user.is_authenticated %}
+				<a href="{{user.get_absolute_url}}"><img class="user-photo" src="/media/{{ user.photo }}"></a>
+				<li class="last"><a href="{{user.get_absolute_url}}">{{user.username}}</a> | <a href="{% url 'logout' %}">Выйти</a></li>
+	{% else %}
+				<li class="last"><a href="{% url 'register' %}">Регистрация</a> | <a href="{% url 'login' %}">Войти</a></li>
+	{% endif %}
+				</ul>
 		</header>
 {% endblock mainmenu %}
 
 
-<div class="container">
-<div  valign="top" class="left-chapters">
-	<ul id="leftchapters">
-{% if cat_selected == 0 %}
-		<li class="selected">Все категории</li>
-{% else %}
-		<li><a href="{% url 'home' %}">Все категории</a>
-			{% for b in brands %}
-				{% if b.pk == cat_selected %}
-					<li class="selected">{{b.name}}</li>
-				{% else %}
-					<li><a href="{{ b.get_absolute_url }}">{{b.name}}</a></li>		
-				{% endif %}
-			{% endfor %}
-		</li>
-{% endif %}
-	</ul>
-</div>
+
 
 	<div class="content-text">
 {% block content %}
