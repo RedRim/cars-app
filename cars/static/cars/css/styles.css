@@ -23,10 +23,6 @@ header {
 }
 .content-text h1 {font-size: 32px;}
 
-.brand {
-	
-}
-
 .content {
 	margin: 70px 0 0 0;
 }
@@ -41,12 +37,12 @@ header {
 
 .triangle-right {
 	display: block;
-	margin: 5px;
+	margin: 7px;
 	width: 0;
 	height: 0;
-	border-top: 15px solid transparent;
-	border-left: 30px solid #0ad3ea;
-	border-bottom: 15px solid transparent;
+	border-top: 13px solid transparent;
+	border-left: 30px solid #0aabea;
+	border-bottom: 13px solid transparent;
 	float: right;
 }
 
@@ -58,13 +54,35 @@ header {
 	background-color: #f6f4f4;
 	border-top-right-radius: 20px;
 	border-bottom-right-radius: 20px;
-	left: -630px;
-	transition: all 0.5s ease;
+	left: -628px;
+	transition: all 0.5s;
+	transition-delay: 0.5s;
 }
 
 .filters:hover {
 	left: 28px;
-	transition: all 0.5s ease;
+	transition: all 0.5s;
+}
+
+.apply-filters {
+	margin: 0 29px;
+	float: right;
+	padding: 5px 10px;
+	border: none;
+	background-color: #0aabea;
+	color: #fff;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.filter {
+	margin: 7px 5px 0 30px;
+}
+  
+select {
+	padding: 4px;
+	border-radius: 4px;
+	border: 1px solid #ccc;
 }
 
 ul.mainmenu {
@@ -89,14 +107,28 @@ ul.mainmenu li.last {
 ul.mainmenu li a {
 	font-family: "Trebuchet MS";
 	font-weight: bold;
-	color: #0ad3ea;
+	color: #0aabea;
 	text-decoration: none;
 }
 ul.mainmenu li a:hover {
-	color: #0ad3ea;
+	color: #0aabea;
 }
 
 .article {
+	display: block;
+	width: 1200px;
+	height: 200px;
+	background-color: #f6f4f4;
+	border-radius: 30px;
+	float: right;
+	margin: 10px 25px;
+}
+
+/* .home {
+	margin: 40;
+} */
+
+.article li {
 	list-style-type: none;
 }
 
@@ -110,9 +142,12 @@ img.img-article-left {
 }
 
 img.img-article-left.thumb {
-	max-width: 150px;
-	height: auto;
-	float: left;
+	height: 200px;
+	width: auto;
+	float: right;
+	margin: 0 -5px;
+	border-top-right-radius: 30px;
+	border-bottom-right-radius: 30px;
 }
 
 img.user-photo {
@@ -123,15 +158,6 @@ img.user-photo {
 	float: right;
 }
 
-.home {
-	margin: 40;
-	/* background: url('../images/logo.png') no-repeat 10px 5px;
-	width: 70px;
-	height: 60px; */
-}
-
-
-
 a {
 	color: #000000;
 	text-decoration: none;
@@ -140,6 +166,8 @@ a:hover {
 	color: #000000;
 	text-decoration: underline;
 }
+
+
 
 p.link-read-post {
 	text-align: right;
@@ -177,7 +205,7 @@ ul.list-articles li {
 
 
 
-.panelitems {
+/* .panelitems {
 	text-align: center;
 }
 
@@ -421,4 +449,4 @@ img.img-article-left {
 img.img-article-left.thumb {
 	max-width: 150px;
 	height: auto;
-}
+} */

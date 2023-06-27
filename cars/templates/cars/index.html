@@ -3,28 +3,29 @@
 {% block content %}
 <div class="filters">
     <div class="triangle-right"></div>
-    <form action="{% url 'home' %}" method="GET">
+    <form class="filter" action="{% url 'home' %}" method="GET">
         <select id="brand-filter" name="brand">
             <option value="">Выберите фирму</option>
             {% for brand in brands %}
                 <option value="{{ brand.slug }}" {% if request.GET.brand == brand.slug %} selected {% endif %}>{{ brand.name }}</option>
             {% endfor %}
         </select>
-        <button type="submit">Применить</button>
+        <button class="apply-filters" type="submit">Применить</button>
     </form>
 </div>
 
 <p class="headline">Статьи об автомобилях</p>
 <ul class="content">
     {% for p in posts %}
-    <li class="article">
-        {% if p.photo %}
-        <p class="link-read-post"><a href="{{ p.get_absolute_url }}"><img class="img-article-left thumb" src="/media/{{ p.photo }}" alt="Фото"></a></p>
-        {% endif %}
-        <h2><a href="{{ p.get_absolute_url }}">{{ p.brand.name }} {{ p.title }}</a></h2>
-        <p>{{ p.short_content }}</p>  
-        <hr>
-    </li>
+    <a class="article" href="{{ p.get_absolute_url }}">
+        <li>
+            {% if p.photo %}
+            <img class="img-article-left thumb" src="/media/{{ p.photo }}" alt="Фото">
+            {% endif %}
+            <!-- <p><a href="{{ p.get_absolute_url }}">{{ p.brand.name }} {{ p.title }}</a></p>
+            <p>{{ p.short_content }}</p>   -->
+        </li>
+    </a>
     {% endfor %}
 </ul>
 {% endblock %}
