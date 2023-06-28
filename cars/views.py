@@ -219,7 +219,7 @@ def create_comment(request, post_slug):
             form.instance.author = request.user
             comment = form.instance
             comment.slug = str(random.random()) + str(comment.author.first_name)
-            print(comment.content)
+            comment.slug += str(comment.pk)
             comment.save()
             post.comments.add(comment)
             post.save()
