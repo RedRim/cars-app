@@ -1,54 +1,82 @@
 {% extends 'cars/base.html' %}
 
 {% block content %}
-<div class="filters">
-    <div class="triangle-right"></div>
-    <form class="filter" action="{% url 'home' %}" method="GET">
-        <select id="brand-filter" name="brand">
-            <option value="">Выберите фирму</option>
-            {% for brand in brands %}
-                <option value="{{ brand.slug }}" {% if request.GET.brand == brand.slug %} selected {% endif %}>{{ brand.name }}</option>
-            {% endfor %}
-        </select>
-        <select id="date-sort" name="sort">
-            <option value="">Сортировать по дате</option>
-            <option value="latest" {% if request.GET.sort == 'latest' %} selected {% endif %}>По новизне</option>
-            <option value="oldest" {% if request.GET.sort == 'oldest' %} selected {% endif %}>По старым</option>
-        </select>
-        <select id="author-sort" name="author">
-            <option value="">Сортировать по авторам</option>
-            {% for author in authors %}
-                <option value="{{ author.slug }}" {% if request.GET.author == author.slug %} selected {% endif %}>{{ author.username }}</option>
-            {% endfor %}
-        </select>
-        <button class="apply-filters" type="submit">Применить</button>
-    </form>
-</div>
+    <div class="filters">
+        <div class="triangle-right"></div>
+        <form class="filter" action="{% url 'home' %}" method="GET">
+            <select id="brand-filter" name="brand">
+                <option value="">Выберите фирму</option>
+                {% for brand in brands %}
+                    <option value="{{ brand.slug }}" {% if request.GET.brand == brand.slug %} selected {% endif %}>{{ brand.name }}</option>
+                {% endfor %}
+            </select>
+            <select id="date-sort" name="sort">
+                <option value="">Сортировать по дате</option>
+                <option value="latest" {% if request.GET.sort == 'latest' %} selected {% endif %}>Сначала новые</option>
+                <option value="oldest" {% if request.GET.sort == 'oldest' %} selected {% endif %}>Сначала старые</option>
+            </select>
+            <select id="author-sort" name="author">
+                <option value="">Сортировать по авторам</option>
+                {% for author in authors %}
+                    <option value="{{ author.slug }}" {% if request.GET.author == author.slug %} selected {% endif %}>{{ author.username }}</option>
+                {% endfor %}
+            </select>
+            <button class="apply-filters" type="submit">Применить</button>
+        </form>
+    </div>
 
-<p class="headline">Статьи об автомобилях</p>
-<ul class="content">
-    {% for p in posts %}
-    {% if forloop.counter|divisibleby:2 %}
-    <a class="article" href="{{ p.get_absolute_url }}">
-        <li class="left">
-            {% if p.photo %}
-            <img class="img_article_left" src="/media/{{ p.photo }}" alt="Фото">
+    <p class="headline">Статьи об автомобилях</p>
+    <ul class="content">
+        {% for p in posts %}
+            {% if forloop.counter|divisibleby:2 %}
+                <a class="article" href="{{ p.get_absolute_url }}">
+                    <li class="left">
+                        {% if p.photo %}
+                            <img class="img_article_left" src="/media/{{ p.photo }}" alt="Фото">
+                        {% endif %}
+                        <p class="title_left">{{ p.brand.name }} {{ p.title }}</p>
+                        <p class="short_content_left">{{ p.short_content }}</p>
+                    </li>
+                </a>
+            {% else %}
+                <a class="article" href="{{ p.get_absolute_url }}">
+                    <li class="right">
+                        {% if p.photo %}
+                            <img class="img_article_right" src="/media/{{ p.photo }}" alt="Фото">
+                        {% endif %}
+                        <p class="title_right">{{ p.brand.name }} {{ p.title }}</p>
+                        <p class="short_content_right">{{ p.short_content }}</p>
+                    </li>
+                </a>
             {% endif %}
-            <p class="title_left">{{ p.brand.name }} {{ p.title }}</p>
-            <p class="short_content_left">{{ p.short_content }}</p>
-        </li>
-    </a>
-    {% else %}
-    <a class="article" href="{{ p.get_absolute_url }}">
-        <li class="right">
-            {% if p.photo %}
-            <img class="img_article_right" src="/media/{{ p.photo }}" alt="Фото">
-            {% endif %}
-            <p class="title_right">{{ p.brand.name }} {{ p.title }}</p>
-            <p class="short_content_right">{{ p.short_content }}</p>
-        </li>
-    </a>
+        {% endfor %}
+    </ul>
+
+    {% if page_obj.has_other_pages %}
+        <nav class="list-pages">
+            <ul>
+                {% if page_obj.has_previous %}
+                    <li class="page-num">
+                        <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+                    </li>
+                {% endif %}
+
+                {% for p in paginator.page_range %}
+                    {% if page_obj.number == p %}
+                        <li class="page-num page-num-selected">{{ p }}</li>
+                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                        <li class="page-num">
+                            <a href="?page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-num">
+                        <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     {% endif %}
-    {% endfor %}
-</ul>
 {% endblock %}
