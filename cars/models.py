@@ -37,6 +37,11 @@ class Cars(models.Model):
                 counter += 1
             self.slug = slug
         super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = 'Статья'
+        verbose_name_plural = 'Статьи'
+        ordering = ['time_create']
     
 class Brands(models.Model):
     name = models.CharField(max_length=30, db_index=True)
