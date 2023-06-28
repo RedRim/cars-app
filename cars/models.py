@@ -15,12 +15,17 @@ class Cars(models.Model):
     brand = models.ForeignKey('Brands', on_delete=models.PROTECT, verbose_name="Марка")
     author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
     comments = models.ManyToManyField('Comment', verbose_name="Комментарии", blank=True)
-
+    likes_amount = models.IntegerField(verbose_name="Лайки")
+    
     def __str__(self):
         return self.title
     
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
+    
+    def increase_like_amount(self):
+        self.likes_amount += 1
+        return self.likes_amount
     
     def save(self, *args, **kwargs):
         if not self.slug:

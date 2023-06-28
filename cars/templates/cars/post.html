@@ -17,6 +17,16 @@
     </form>
     {% endif %}
 </p>
+
+<form method="POST" action="{% url 'add_like' post.slug %}">
+    {% csrf_token %}
+    {% if request.user.is_authenticated %}
+    <button type="submit">{{post.likes_amount}}</button>
+    {% else %}
+    <p>{{post.likes_amount}}</p>
+    {% endif %}
+</form>
+
     <!-- Создание комментария -->
 {% if request.user.is_authenticated and post.is_published == True %}
     <form method='POST', action="{% url 'create_comment' post.slug %}", enctype="multipart/form-data">

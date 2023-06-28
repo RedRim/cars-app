@@ -38,7 +38,7 @@ class CarsHome(DataMixin, ListView):
         brand_slug = self.request.GET.get('brand')
         if brand_slug:
             queryset = queryset.filter(brand__slug=brand_slug)
-
+        queryset = queryset.filter(is_published=True)
         return queryset.order_by('-time_create')
 
 class AddPage(DataMixin, CreateView):
@@ -229,6 +229,12 @@ def contact(request):
     else:
         form = FeedbackMessageForm()
     return render(request, 'cars/contact.html', {'form': form, 'menu': menu, 'title': 'Обратная связь'})
+
+def add_like(request, post_slug):
+    post = get_object_or_404(Cars, slug=post_slug)
+    post.likes_amount += 1
+    post.save()
+    return redirect('post', post_slug=post.slug)
 
 def about(request):
     return render(request, 'cars/about.html', {'menu': menu, 'title': 'О сайте'})

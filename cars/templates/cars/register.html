@@ -1,17 +1,19 @@
 {% extends 'cars/base.html' %}
 
 {% block content %}
-<h1>{{title}}</h1>
-
-<form method="post">
-    {% csrf_token %}
-
-    {% for f in form %}
-        <p><label class="form-label" for="{{ f.id_label }}">{{ f.label}}: </label>{{ f }}</p>
-        <div class="form-errors">{{ f.errors }}</div>
-    {% endfor %}
-    
-    <button type="submit">Регистрация</button>
-</form>
-
+<main>
+    <div class="register_block">
+        <form method="post">
+            {% csrf_token %}
+            <p class="head_form">Регистрация</p>
+            {% for f in form %}
+                <p><label class="form_label" for="{{ f.id_for_label }}"></label></p>
+                <p>{{ f }}</p>
+                <div class="form_error">{{ f.errors }}</div>
+            {% endfor %}
+            <button class="register_btn" type="submit"><span>Регистрация</span></button>
+            <div class="form_error">{{ form.non_field_errors }}</div>
+        </form>
+    </div>
+</main>
 {% endblock %}
