@@ -57,14 +57,21 @@ def get_default_photo():
     
 class CustomUser(AbstractUser):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="user URL")
-    photo = models.ImageField(upload_to="photos/profile_picture/", verbose_name="Фото", blank=True, null=True)
+    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото", blank=True, null=True)
     is_moder = models.BooleanField(default=False)
 
     def get_default_photo():
-        return 'cars/static/cars/images/default_photo.avif'
+        return 'photos/profile_picture/defaultphoto.jpg'
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.username)
+        if not self.slug:
+            base_slug = slugify(self.username)
+            slug = base_slug
+            counter = 1
+            while Cars.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -92,8 +99,6 @@ class Comment(models.Model):
     author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     content = models.TextField(blank=True, verbose_name="Комментарий", null=True)
-
-    
 
     class Meta:
         verbose_name = 'Комментарий'
