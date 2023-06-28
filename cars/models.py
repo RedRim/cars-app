@@ -15,7 +15,7 @@ class Cars(models.Model):
     brand = models.ForeignKey('Brands', on_delete=models.PROTECT, verbose_name="Марка")
     author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
     comments = models.ManyToManyField('Comment', verbose_name="Комментарии", blank=True)
-    likes_amount = models.IntegerField(verbose_name="Лайки")
+    likes_amount = models.IntegerField(verbose_name="Лайки", default = 0)
     
     def __str__(self):
         return self.title

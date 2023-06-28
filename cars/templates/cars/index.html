@@ -10,6 +10,17 @@
                 <option value="{{ brand.slug }}" {% if request.GET.brand == brand.slug %} selected {% endif %}>{{ brand.name }}</option>
             {% endfor %}
         </select>
+        <select id="date-sort" name="sort">
+            <option value="">Сортировать по дате</option>
+            <option value="latest" {% if request.GET.sort == 'latest' %} selected {% endif %}>По новизне</option>
+            <option value="oldest" {% if request.GET.sort == 'oldest' %} selected {% endif %}>По старым</option>
+        </select>
+        <select id="author-sort" name="author">
+            <option value="">Сортировать по авторам</option>
+            {% for author in authors %}
+                <option value="{{ author.slug }}" {% if request.GET.author == author.slug %} selected {% endif %}>{{ author.username }}</option>
+            {% endfor %}
+        </select>
         <button class="apply-filters" type="submit">Применить</button>
     </form>
 </div>

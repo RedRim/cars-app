@@ -21,15 +21,17 @@ import random
 
 class CarsHome(DataMixin, ListView):
     model = Cars
-    template_name = "cars/index.html"
+    template_name = 'cars/index.html'
     context_object_name = 'posts'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Главная страница")
         brands = Brands.objects.all()
+        authors = CustomUser.objects.all()  # Добавьте это, чтобы получить список всех авторов
         context['brands'] = brands
-
+        context['authors'] = authors  # Передайте список авторов в контекст
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
@@ -38,8 +40,20 @@ class CarsHome(DataMixin, ListView):
         brand_slug = self.request.GET.get('brand')
         if brand_slug:
             queryset = queryset.filter(brand__slug=brand_slug)
-        queryset = queryset.filter(is_published=True)
-        return queryset.order_by('-time_create')
+        
+        queryset = queryset.filter(is_published=True).order_by('-time_create')
+
+        sort = self.request.GET.get('sort')
+        if sort == 'latest':
+            queryset = queryset.order_by('-time_create')  # Сортировка по новизне
+        elif sort == 'oldest':
+            queryset = queryset.order_by('time_create')  # Сортировка по старым
+
+        author_slug = self.request.GET.get('author')
+        if author_slug:
+            queryset = queryset.filter(author__slug=author_slug)
+
+        return queryset
 
 class AddPage(DataMixin, CreateView):
     form_class = AddPostForm
