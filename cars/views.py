@@ -29,9 +29,9 @@ class CarsHome(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Главная страница")
         brands = Brands.objects.all()
-        authors = CustomUser.objects.all()  # Добавьте это, чтобы получить список всех авторов
+        authors = CustomUser.objects.all()
         context['brands'] = brands
-        context['authors'] = authors  # Передайте список авторов в контекст
+        context['authors'] = authors
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
