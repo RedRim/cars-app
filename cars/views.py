@@ -23,7 +23,7 @@ class CarsHome(DataMixin, ListView):
     model = Cars
     template_name = 'cars/index.html'
     context_object_name = 'posts'
-    paginate_by = 2
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -219,7 +219,7 @@ def create_comment(request, post_slug):
             form.instance.author = request.user
             comment = form.instance
             comment.slug = str(random.random()) + str(comment.author.first_name)
-            print(comment.content)
+            comment.slug += str(comment.pk)
             comment.save()
             post.comments.add(comment)
             post.save()

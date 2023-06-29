@@ -51,8 +51,11 @@
             {% endif %}
         {% endfor %}
     </ul>
+{% endblock %}
 
-    {% if page_obj.has_other_pages %}
+{% block footer %}
+    <footer>
+        {% if page_obj.has_other_pages %}
         <nav class="list-pages">
             <ul>
                 {% if page_obj.has_previous %}
@@ -78,5 +81,9 @@
                 {% endif %}
             </ul>
         </nav>
-    {% endif %}
+        {% endif %}
+    </footer>
+    <p>
+        
+    </p>
 {% endblock %}

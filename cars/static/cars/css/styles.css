@@ -226,6 +226,14 @@ ul.mainmenu li a:hover {
 	text-decoration: none;
 }
 
+.short_content_right {
+	margin: 100px 350px 0 30px;
+	font-family: "Trebuchet MS";
+	font-weight: bold;
+	color: #0aabea;
+	text-decoration: none;
+}
+
 .title_right {
 	margin: 20px 0 0 30px ;
 	font-family: sans-serif;
