@@ -19,6 +19,8 @@ from django.contrib.auth.views import PasswordChangeView
 import random
 
 
+from django.core.paginator import Paginator
+
 class CarsHome(DataMixin, ListView):
     model = Cars
     template_name = 'cars/index.html'
@@ -32,6 +34,12 @@ class CarsHome(DataMixin, ListView):
         authors = CustomUser.objects.all()
         context['brands'] = brands
         context['authors'] = authors
+
+        # Добавление параметров фильтрации в контекст для использования при пагинации
+        context['brand_filter'] = self.request.GET.get('brand')
+        context['sort_filter'] = self.request.GET.get('sort')
+        context['author_filter'] = self.request.GET.get('author')
+
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
@@ -54,6 +62,7 @@ class CarsHome(DataMixin, ListView):
             queryset = queryset.filter(author__slug=author_slug)
 
         return queryset
+
 
 class AddPage(DataMixin, CreateView):
     form_class = AddPostForm
