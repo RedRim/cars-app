@@ -14,7 +14,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.views import PasswordChangeView
 
 import random
 
@@ -34,11 +33,12 @@ class CarsHome(DataMixin, ListView):
         authors = CustomUser.objects.all()
         context['brands'] = brands
         context['authors'] = authors
-
-        # Добавление параметров фильтрации в контекст для использования при пагинации
-        context['brand_filter'] = self.request.GET.get('brand')
-        context['sort_filter'] = self.request.GET.get('sort')
-        context['author_filter'] = self.request.GET.get('author')
+        brand_filter = self.request.GET.get('brand')
+        sort_filter = self.request.GET.get('sort')
+        author_filter = self.request.GET.get('author')
+        context['brand_filter'] = brand_filter if brand_filter else ''
+        context['sort_filter'] = sort_filter if sort_filter else ''
+        context['author_filter'] = author_filter if author_filter else ''           
 
         return dict(list(context.items()) + list(c_def.items()))
 
