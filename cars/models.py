@@ -3,10 +3,10 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
 from django.urls import reverse
 
-class Cars(models.Model):
+class Post(models.Model):
     title = models.CharField(max_length=255, verbose_name="Модель")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
-    short_content = models.CharField(max_length=255, verbose_name="Краткое описание")
+    short_content = models.CharField(max_length=255, verbose_name="Заголовок")
     content = models.TextField(blank=True, verbose_name="Текст статьи")
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото", blank=True)
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
@@ -32,7 +32,7 @@ class Cars(models.Model):
             base_slug = slugify(self.title)
             slug = base_slug
             counter = 1
-            while Cars.objects.filter(slug=slug).exists():
+            while Post.objects.filter(slug=slug).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
             self.slug = slug
@@ -78,7 +78,7 @@ class CustomUser(AbstractUser):
             base_slug = slugify(self.username)
             slug = base_slug
             counter = 1
-            while Cars.objects.filter(slug=slug).exists():
+            while Post.objects.filter(slug=slug).exists():
                 slug = f"{base_slug}-{counter}"
                 counter += 1
             self.slug = slug

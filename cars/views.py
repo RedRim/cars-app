@@ -21,7 +21,7 @@ import random
 from django.core.paginator import Paginator
 
 class CarsHome(DataMixin, ListView):
-    model = Cars
+    model = Post
     template_name = 'cars/index.html'
     context_object_name = 'posts'
     paginate_by = 10
@@ -79,7 +79,7 @@ class AddPage(DataMixin, CreateView):
 
 class ShowPost(DataMixin, DetailView):
     form_class = AddCommentForm
-    model = Cars
+    model = Post
     template_name = "cars/post.html"
     slug_url_kwarg = 'post_slug'
     context_object_name = 'post'
@@ -94,7 +94,7 @@ class ShowPost(DataMixin, DetailView):
         return dict(list(context.items()) + list(c_def.items()))
 
 class CarsBrand(DataMixin, ListView):
-    model = Cars
+    model = Post
     template_name = "cars/index.html"
     context_object_name = 'posts'
     allow_empty = False
@@ -106,7 +106,7 @@ class CarsBrand(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        return Cars.objects.filter(brand__slug=self.kwargs['brand_slug'], is_published=True)
+        return Post.objects.filter(brand__slug=self.kwargs['brand_slug'], is_published=True)
 
 class RegisterUser(DataMixin, CreateView):
     form_class = RegisterUserForm
@@ -179,7 +179,7 @@ class LoginUser(DataMixin, LoginView):
         return reverse_lazy('home')
     
 class Profile(DataMixin, ListView):
-    model = Cars
+    model = Post
     template_name = "cars/profile.html"
     context_object_name = 'posts'
     slug_url_kwarg = 'profile_slug'
@@ -198,11 +198,11 @@ class Profile(DataMixin, ListView):
     
     def get_queryset(self):
         if self.request.user.is_authenticated and self.request.user.slug == self.kwargs['profile_slug']:
-            return Cars.objects.filter(author__slug=self.kwargs['profile_slug'])
-        return Cars.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=True)
+            return Post.objects.filter(author__slug=self.kwargs['profile_slug'])
+        return Post.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=True)
     
 class Modering(DataMixin, ListView):
-    model = Cars
+    model = Post
     template_name = "cars/moder.html"
     context_object_name = 'posts'
 
@@ -212,16 +212,16 @@ class Modering(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
-        return Cars.objects.filter(is_published=False)
+        return Post.objects.filter(is_published=False)
 
 def toggle_is_published(request, post_slug):
-    post = get_object_or_404(Cars, slug=post_slug)
+    post = get_object_or_404(Post, slug=post_slug)
     post.is_published = True
     post.save()
     return redirect('post', post_slug=post.slug)
 
 def create_comment(request, post_slug):
-    post = get_object_or_404(Cars, slug=post_slug)
+    post = get_object_or_404(Post, slug=post_slug)
     if(request.method == 'POST'):
         form = AddCommentForm(request.POST)
         if form.is_valid():
@@ -254,7 +254,7 @@ def contact(request):
     return render(request, 'cars/contact.html', {'form': form, 'menu': menu, 'title': 'Обратная связь'})
 
 def add_like(request, post_slug):
-    post = get_object_or_404(Cars, slug=post_slug)
+    post = get_object_or_404(Post, slug=post_slug)
     post.likes_amount += 1
     post.save()
     return redirect('post', post_slug=post.slug)

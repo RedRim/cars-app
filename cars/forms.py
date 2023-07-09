@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 
-from .models import CustomUser, Cars, FeedbackMessage, Comment
+from .models import CustomUser, Post, FeedbackMessage, Comment
 
 
 class AddPostForm(forms.ModelForm):
@@ -13,7 +13,7 @@ class AddPostForm(forms.ModelForm):
         self.fields['brand'].empty_label = "Марка не выбрана"
 
     class Meta:
-        model = Cars
+        model = Post
         fields = ['title', 'short_content', 'content', 'photo', 'brand']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),

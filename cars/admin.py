@@ -2,8 +2,8 @@ from django.contrib import admin
 
 from .models import *
 
-class CarsAdmin(admin.ModelAdmin):
-  list_display = ('id', 'title', 'time_create', 'photo', 'author','is_published')
+class PostsAdmin(admin.ModelAdmin):
+  list_display = ('id', 'title', 'time_create', 'photo', 'author', 'is_published')
   list_display_links = ('id', 'title')
   search_fields = ('title', 'content')
   prepopulated_fields = {"slug": ('title',)}
@@ -27,7 +27,7 @@ class CustomUserAdmin(admin.ModelAdmin):
   list_display_links = ('slug',)
   search_fields = ('login', 'first_name', 'last_name')
   
-admin.site.register(Cars, CarsAdmin)
+admin.site.register(Post, PostsAdmin)
 admin.site.register(Brands, BrandAdmin)
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(FeedbackMessage, FeedbackMessageAdmin)
