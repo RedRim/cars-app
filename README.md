@@ -18,22 +18,22 @@ Sqlite3
 </pre>
 
 #### 2) Создать виртуальное окружение:
-<pre><code>
+<pre>
   python -m venv venv
-</code></pre>
+</pre>
 
 #### 3) Активировать вирутальное окружение:
-<pre><code>
+<pre>
   UNIX:
     source venv/bin/activate
   Windows:
     venv\Scripts\activate.bat
-</code></pre>
+</pre>
 
 #### 4) Установить зависимости:
-<pre><code>
+<pre>
   pip install -r requirements.txt
-</code></pre>
+</pre>
 
 #### 5) Зайти в папку с проектом и запустить сервер:
 <pre><code>
