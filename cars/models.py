@@ -107,7 +107,7 @@ class Comment(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
-    content = models.TextField(blank=True, verbose_name="Комментарий", null=True)
+    content = models.TextField(blank=False, verbose_name="Комментарий", null=True)
     post = models.ForeignKey('Post', verbose_name="Комментарии", blank=True, on_delete=models.CASCADE)
 
     class Meta:
