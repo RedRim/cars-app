@@ -78,7 +78,6 @@ class AddPage(DataMixin, CreateView):
         return dict(list(context.items()) + list(c_def.items()))
 
 class ShowPost(DataMixin, DetailView):
-    form_class = AddCommentForm
     model = Post
     template_name = "cars/post.html"
     slug_url_kwarg = 'post_slug'
@@ -90,7 +89,7 @@ class ShowPost(DataMixin, DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='slug', form=AddCommentForm)
+        c_def = self.get_user_context(title=context['post'].title, form=AddCommentForm, comments=Comment.objects.filter(post__slug=context['post'].slug))
         return dict(list(context.items()) + list(c_def.items()))
 
 class CarsBrand(DataMixin, ListView):
@@ -229,9 +228,8 @@ def create_comment(request, post_slug):
             comment = form.instance
             comment.slug = str(random.random()) + str(comment.author.first_name)
             comment.slug += str(comment.pk)
+            comment.post = post
             comment.save()
-            post.comments.add(comment)
-            post.save()
             return redirect('post', post_slug=post.slug)
     return redirect('post', post_slug=post.slug)
 

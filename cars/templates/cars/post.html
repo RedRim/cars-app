@@ -39,8 +39,8 @@
         <button type="submit">Комментировать</button>
 {% endif %}
     <!-- Блок с комментариями пользователей -->
-<p>Комментариев: {{post.comments.count}}</p>
-{% for c in post.comments.all %}
+<p>Комментариев: {{comments.count}}</p>
+{% for c in comments.all %}
     <h3><a href="{{ post.author.get_absolute_url }}">{{ c.author.first_name }} {{ c.author.last_name }}</a></h3>
     <p>{{c.content}}</p>
 {% endfor %}

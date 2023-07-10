@@ -14,7 +14,6 @@ class Post(models.Model):
     is_published = models.BooleanField(default=False, verbose_name="Публикация")
     brand = models.ForeignKey('Brands', on_delete=models.PROTECT, verbose_name="Марка")
     author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
-    comments = models.ManyToManyField('Comment', verbose_name="Комментарии", blank=True)
     likes_amount = models.IntegerField(verbose_name="Лайки", default = 0)
     
     def __str__(self):
@@ -109,6 +108,7 @@ class Comment(models.Model):
     author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     content = models.TextField(blank=True, verbose_name="Комментарий", null=True)
+    post = models.ForeignKey('Post', verbose_name="Комментарии", blank=True, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Комментарий'
