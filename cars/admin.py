@@ -4,11 +4,11 @@ from .models import *
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-  list_display = ('id', 'title', 'time_create', 'photo', 'author', 'is_published')
+  list_display = ('id', 'title', 'time_create', 'time_update', 'photo', 'author', 'is_published')
   list_display_links = ('id', 'title')
   search_fields = ('title', 'content')
   prepopulated_fields = {"slug": ('title',)}
-  #Выбор автора не из списка, а по id (с возможностью поиска)
+  #Выбор автора по id (с возможностью поиска)
   raw_id_fields = ['author']
 
 @admin.register(Brands)

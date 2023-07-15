@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
+from django.utils import timezone
 from django.urls import reverse
 
 class Post(models.Model):
@@ -26,6 +27,11 @@ class Post(models.Model):
         self.likes_amount += 1
         return self.likes_amount
     
+    def create(self, *args, **kwargs):
+        self.time_create = timezone.now
+        self.time_update = timezone.now
+        super().save(*args, **kwargs)
+    
     def save(self, *args, **kwargs):
         if not self.slug:
             base_slug = slugify(self.title)
@@ -35,12 +41,16 @@ class Post(models.Model):
                 slug = f"{base_slug}-{counter}"
                 counter += 1
             self.slug = slug
+            self.time_update = timezone.now
         super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
         ordering = ['time_create']
+        indexes = [
+            models.Index(fields=['time_create']),
+        ]
     
 class Brands(models.Model):
     name = models.CharField(max_length=30, db_index=True)
