@@ -6,8 +6,12 @@ from .models import *
 class PostAdmin(admin.ModelAdmin):
   list_display = ('id', 'title', 'time_create', 'time_update', 'photo', 'author', 'is_published')
   list_display_links = ('id', 'title')
+  #Атрибуты, по которым можно фильтровать в админке (справа)
+  list_filter = ['is_published', 'time_create']
   search_fields = ('title', 'content')
   prepopulated_fields = {"slug": ('title',)}
+  #Добавляет ссылки для навигации по иерархии дат.
+  date_hierarchy = 'time_create'
   #Выбор автора по id (с возможностью поиска)
   raw_id_fields = ['author']
 
