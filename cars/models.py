@@ -23,10 +23,6 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
     
-    def increase_like_amount(self):
-        self.likes_amount += 1
-        return self.likes_amount
-    
     def create(self, *args, **kwargs):
         self.time_create = timezone.now
         self.time_update = timezone.now
