@@ -43,7 +43,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
-        ordering = ['time_create']
+        ordering = ['-time_create']
         indexes = [
             models.Index(fields=['time_create']),
             models.Index(fields=['is_published'])

@@ -50,8 +50,7 @@ class CarsHome(DataMixin, ListView):
         if brand_slug:
             queryset = queryset.filter(brand__slug=brand_slug)
         
-        queryset = queryset.filter(is_published=True).order_by('-time_create')
-
+        queryset = queryset.filter(is_published=True)
         sort = self.request.GET.get('sort')
         if sort == 'latest':
             queryset = queryset.order_by('-time_create')  # Сортировка по новизне
