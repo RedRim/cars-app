@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.urls import reverse
 
 class Post(models.Model):
-    title = models.CharField(max_length=255, verbose_name="Модель")
+    title = models.CharField(max_length=75, verbose_name="Модель")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     short_content = models.CharField(max_length=255, verbose_name="Заголовок")
     content = models.TextField(blank=True, verbose_name="Текст статьи")
@@ -43,9 +43,10 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
-        ordering = ['time_create']
+        ordering = ['-time_create']
         indexes = [
             models.Index(fields=['time_create']),
+            models.Index(fields=['is_published'])
         ]
     
 class Brands(models.Model):
@@ -110,7 +111,6 @@ class FeedbackMessage(models.Model):
         ordering = ['time_create', 'author_id']
 
 class Comment(models.Model):
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     content = models.TextField(blank=False, verbose_name="Комментарий", null=True)
@@ -119,4 +119,4 @@ class Comment(models.Model):
     class Meta:
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
-        ordering = ['time_create', 'content']
+        ordering = ['-time_create', 'content']

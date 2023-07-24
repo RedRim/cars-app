@@ -10,10 +10,11 @@ from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
+from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import transaction
 from django.contrib.auth.forms import PasswordChangeForm
+from django.db import transaction
 
 import random
 
@@ -24,7 +25,7 @@ class CarsHome(DataMixin, ListView):
     model = Post
     template_name = 'cars/index.html'
     context_object_name = 'posts'
-    paginate_by = 10
+    paginate_by = 3
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -49,8 +50,7 @@ class CarsHome(DataMixin, ListView):
         if brand_slug:
             queryset = queryset.filter(brand__slug=brand_slug)
         
-        queryset = queryset.filter(is_published=True).order_by('-time_create')
-
+        queryset = queryset.filter(is_published=True)
         sort = self.request.GET.get('sort')
         if sort == 'latest':
             queryset = queryset.order_by('-time_create')  # Сортировка по новизне
@@ -219,18 +219,16 @@ def toggle_is_published(request, post_slug):
     post.save()
     return redirect('post', post_slug=post.slug)
 
+@require_POST
 def create_comment(request, post_slug):
-    post = get_object_or_404(Post, slug=post_slug)
-    if(request.method == 'POST'):
-        form = AddCommentForm(request.POST)
-        if form.is_valid():
-            form.instance.author = request.user
-            comment = form.instance
-            comment.slug = str(random.random()) + str(comment.author.first_name)
-            comment.slug += str(comment.pk)
-            comment.post = post
-            comment.save()
-            return redirect('post', post_slug=post.slug)
+    post = get_object_or_404(Post, slug=post_slug, is_published=True)
+    form = AddCommentForm(request.POST)
+    if form.is_valid():
+        form.instance.author = request.user
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+        return redirect('post', post_slug=post.slug)
     return redirect('post', post_slug=post.slug)
 
 def logout_user(request):
