@@ -1,47 +1,53 @@
 {% extends 'cars/base.html' %}
 
 {% block content %}
-<h1>{{post.title}}</h1>
+    <h1>{{post.title}}</h1>
 
-{% if post.photo %}
-    <p><img class="img-article-left thumb" src="{{ post.photo.url }}"></p>
-{% endif %}
+    {% if post.photo %}
+        <p><img class="img-article-left thumb" src="{{ post.photo.url }}"></p>
+    {% endif %}
 
-<p>{{ post.content }}</p>
-<p> Автор: <a href="{{ post.author.get_absolute_url }}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
-    <!-- кнопка модерации -->
-    {% if request.user.is_authenticated and request.user.is_moder and post.is_published == False %}
-    <form method="POST" action="{% url 'toggle_is_published' post.slug %}">
+    <p>{{ post.content }}</p>
+
+    <p> 
+        Автор: <a href="{{ post.author.get_absolute_url }}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
+        <!-- кнопка модерации -->
+        {% if request.user.is_authenticated and request.user.is_moder and post.is_published == False %}
+            <form method="POST" action="{% url 'toggle_is_published' post.slug %}">
+                {% csrf_token %}
+                <button type="submit">Опубликовать</button>
+            </form>
+        {% endif %}
+    </p>
+
+    <form method="POST" action="{% url 'add_like' post.slug %}">
         {% csrf_token %}
-        <button type="submit">Опубликовать</button>
+        {% if request.user.is_authenticated %}
+            <button type="submit">Понравилось: {{post.likes_amount}}</button>
+        {% else %}
+            <p>{{post.likes_amount}}</p>
+        {% endif %}
     </form>
-    {% endif %}
-</p>
-
-<form method="POST" action="{% url 'add_like' post.slug %}">
-    {% csrf_token %}
-    {% if request.user.is_authenticated %}
-    <button type="submit">Понравилось: {{post.likes_amount}}</button>
-    {% else %}
-    <p>{{post.likes_amount}}</p>
-    {% endif %}
-</form>
 
     <!-- Создание комментария -->
-{% if request.user.is_authenticated and post.is_published == True %}
-    <form method='POST', action="{% url 'create_comment' post.slug %}", enctype="multipart/form-data">
-        <div class="form-error">{{ form.non_field_errors }}</div>
-        {% csrf_token %}
-        {% for f in form %}
-            <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-            <div class="form-error">{{ f.errors }}</div>
-        {% endfor %}
-        <button type="submit">Комментировать</button>
-{% endif %}
+    {% if request.user.is_authenticated and post.is_published == True %}
+        <form method='POST', action="{% url 'create_comment' post.slug %}", enctype="multipart/form-data">
+            <div class="form-error">{{ form.non_field_errors }}</div>
+            {% csrf_token %}
+            {% for field in form %}
+                <p><label class="form-label" for="{{ field.id_for_label }}">{{field.label}}: </label>{{ field }}</p>
+                <div class="form-error">{{ field.errors }}</div>
+            {% endfor %}
+            <button type="submit">Комментировать</button>
+    {% endif %}
+
     <!-- Блок с комментариями пользователей -->
-<p>Комментариев: {{comments.count}}</p>
-{% for c in comments.all %}
-    <h3><a href="{{ post.author.get_absolute_url }}">{{ c.author.first_name }} {{ c.author.last_name }}</a></h3>
-    <p>{{c.content}}</p>
-{% endfor %}
+    <p>Комментариев: {{comments.count}}</p>
+    {% for comment in comments.all %}
+        <h3>
+            <a href="{{ post.author.get_absolute_url }}">{{ comment.author.first_name }} {{ comment.author.last_name }}</a>
+        </h3>
+        <p>{{comment.content}}</p>
+    {% endfor %}
+
 {% endblock %}
