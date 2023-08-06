@@ -109,7 +109,7 @@ class CarsBrand(DataMixin, ListView):
 
 class RegisterUser(DataMixin, CreateView):
     form_class = RegisterUserForm
-    template_name = 'cars/register.html'
+    template_name = 'account/register.html'
     success_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -130,7 +130,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 class EditProfile(DataMixin, LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = EditProfileForm
-    template_name = 'cars/edit_profile.html'
+    template_name = 'account/edit_profile.html'
     success_url = reverse_lazy('home')
 
     def get_object(self, queryset=None):
@@ -151,7 +151,7 @@ class EditProfile(DataMixin, LoginRequiredMixin, UpdateView):
         return response
     
 class EditPassword(LoginRequiredMixin, FormView):
-    template_name = 'cars/edit_password.html'
+    template_name = 'account/edit_password.html'
     form_class = PasswordChangeForm
     success_url = reverse_lazy('home')
 
@@ -167,7 +167,7 @@ class EditPassword(LoginRequiredMixin, FormView):
     
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
-    template_name = 'cars/login.html'
+    template_name = 'account/login.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -179,7 +179,7 @@ class LoginUser(DataMixin, LoginView):
     
 class Profile(DataMixin, ListView):
     model = Post
-    template_name = "cars/profile.html"
+    template_name = "account/profile.html"
     context_object_name = 'posts'
     slug_url_kwarg = 'profile_slug'
 
