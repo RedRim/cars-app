@@ -1,18 +1,17 @@
 {% extends 'cars/base.html' %}
 
 {% block content %}
-<h1>{{title}}</h1>
+    <h1>{{title}}</h1>
 
-{% for p in posts %}
-<li class="article">
-    {% if p.photo %}
-    <p class="link-read-post"><a href="{{ p.get_absolute_url }}"><img class="img-article-left thumb" src="/media/{{ p.photo }}" alt="Фото"></a></p>
-    {% endif %}
-    <h2><a href="{{ p.get_absolute_url }}">{{ p.brand.name }} {{ p.title }}</a></h2>
-    <p>{{ p.short_content }}</p>
-    <p class="link-read-post"><a>Опубликовать</a></p>
-    <hr>
-</li>
-{% endfor %}
-
+    {% for p in posts %}
+        <li class="article">
+            {% if p.photo %}
+                <p class="link-read-post"><a href="{{ p.get_absolute_url }}"><img class="img-article-left thumb" src="/media/{{ p.photo }}" alt="Фото"></a></p>
+            {% endif %}
+            <h2><a href="{{ p.get_absolute_url }}">{{ p.brand.name }} {{ p.title }}</a></h2>
+            <p>{{ p.short_content }}</p>
+            <p class="link-read-post"><a>Опубликовать</a></p>
+            <hr>
+        </li>
+    {% endfor %}
 {% endblock %}
