@@ -39,6 +39,7 @@
                 <div class="form-error">{{ field.errors }}</div>
             {% endfor %}
             <button type="submit">Комментировать</button>
+        </form>
     {% endif %}
 
     <!-- Блок с комментариями пользователей -->
@@ -49,5 +50,4 @@
         </h3>
         <p>{{comment.content}}</p>
     {% endfor %}
-
 {% endblock %}
