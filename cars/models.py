@@ -15,7 +15,7 @@ class Post(models.Model):
     is_published = models.BooleanField(default=False, verbose_name="Публикация")
     brand = models.ForeignKey('Brands', on_delete=models.PROTECT, verbose_name="Марка")
     author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
-    likes_amount = models.IntegerField(verbose_name="Лайки", default = 0)
+    users_like = models.ManyToManyField('CustomUser', related_name='images_liked', blank=True)
     
     def __str__(self):
         return self.title
