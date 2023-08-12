@@ -3,7 +3,7 @@ from .forms import *
 from .models import *
 
 from typing import Any, Dict
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, FormView
 from django.views.generic.edit import FormMixin
@@ -82,6 +82,22 @@ class ShowPost(DataMixin, DetailView):
     template_name = "cars/post.html"
     slug_url_kwarg = 'post_slug'
     context_object_name = 'post'
+    
+    @require_POST
+    def image_like(request):
+        post_slug = request.POST.get('post_slug')
+        action = request.POST.get('action')
+        if post_slug and action:
+            try:
+                post = Post.objects.get(slug=post_slug)
+                if action == 'like':
+                    post.users_like.add(request.user)
+                else:
+                    post.users_like.remove(request.user)
+                return JsonResponse({'status': 'ok'})
+            except Post.DoesNotExist:
+                pass
+        return JsonResponse({'status': 'error'})
 
     def form_valid(self, form):
         form.instance.author = self.request.user 
@@ -248,12 +264,6 @@ def contact(request):
     else:
         form = FeedbackMessageForm()
     return render(request, 'cars/contact.html', {'form': form, 'menu': menu, 'title': 'Обратная связь'})
-
-def add_like(request, post_slug):
-    post = get_object_or_404(Post, slug=post_slug)
-    post.likes_amount += 1
-    post.save()
-    return redirect('post', post_slug=post.slug)
 
 def about(request):
     return render(request, 'cars/about.html', {'menu': menu, 'title': 'О сайте'})
