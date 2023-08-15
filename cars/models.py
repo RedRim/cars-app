@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
 from django.utils import timezone
 from django.urls import reverse
+from transliterate import translit
 
 class Post(models.Model):
     title = models.CharField(max_length=75, verbose_name="Заголовок")
@@ -29,7 +30,7 @@ class Post(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            base_slug = slugify(self.title)
+            base_slug = slugify(translit(self.title, reversed=True))
             slug = base_slug
             counter = 1
             while Post.objects.filter(slug=slug).exists():
