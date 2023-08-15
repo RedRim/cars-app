@@ -5,9 +5,8 @@ from django.utils import timezone
 from django.urls import reverse
 
 class Post(models.Model):
-    title = models.CharField(max_length=75, verbose_name="Модель")
+    title = models.CharField(max_length=75, verbose_name="Заголовок")
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
-    short_content = models.CharField(max_length=255, verbose_name="Заголовок")
     content = models.TextField(blank=True, verbose_name="Текст статьи")
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото", blank=True)
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")

@@ -34,7 +34,7 @@
                         {% if p.photo %}
                             <img class="img_article_left" src="/media/{{ p.photo }}" alt="Фото">
                         {% endif %}
-                        <p class="title_left">{{ p.brand.name }} {{ p.title }}</p>
+                        <p class="title_left">{{ p.title }}</p>
                         <p class="short_content_left">{{ p.short_content }}</p>
                     </li>
                 </a>
@@ -44,7 +44,7 @@
                         {% if p.photo %}
                             <img class="img_article_right" src="/media/{{ p.photo }}" alt="Фото">
                         {% endif %}
-                        <p class="title_right">{{ p.brand.name }} {{ p.title }}</p>
+                        <p class="title_right">{{ p.title }}</p>
                         <p class="short_content_right">{{ p.short_content }}</p>
                     </li>
                 </a>
