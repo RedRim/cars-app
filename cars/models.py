@@ -14,7 +14,7 @@ class Post(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
     is_published = models.BooleanField(default=False, verbose_name="Публикация")
     brand = models.ForeignKey('Brands', on_delete=models.PROTECT, verbose_name="Марка")
-    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
+    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, related_name='posts', verbose_name="Автор", null=True)
     users_like = models.ManyToManyField('CustomUser', related_name='images_liked', blank=True)
     
     def __str__(self):

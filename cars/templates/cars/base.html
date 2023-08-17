@@ -11,9 +11,7 @@
 <body>
     {% block mainmenu %}
         <header>
-            <a href="{% url 'home' %}" class="menu-button"></a></li>
             <ul id="mainmenu" class="mainmenu">
-                <li><a href="{% url 'home' %}">Главная</a></li>
                 {% for m in menu %}
                     <li><a href="{% url m.url_name %}">{{m.title}}</a></li>
                 {% endfor %}

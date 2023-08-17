@@ -1,0 +1,13 @@
+{% extends 'cars/base.html' %}
+{% load user_tags %}
+
+{% block content %}
+    {% for user in users %}
+    <a href="{{ user.get_absolute_url }}">
+        <div>
+            <h3>{{user.first_name}} {{user.last_name}}</h3>
+            <p>Статей: {{user.posts.count}}</p>
+        </div>
+    </a>
+    {% endfor %}
+{% endblock %}
