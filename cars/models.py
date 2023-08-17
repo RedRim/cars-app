@@ -1,5 +1,6 @@
+from account.models import CustomUser
+
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
 from django.utils import timezone
 from django.urls import reverse
@@ -14,8 +15,8 @@ class Post(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время изменения")
     is_published = models.BooleanField(default=False, verbose_name="Публикация")
     brand = models.ForeignKey('Brands', on_delete=models.PROTECT, verbose_name="Марка")
-    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
-    users_like = models.ManyToManyField('CustomUser', related_name='images_liked', blank=True)
+    author = models.ForeignKey(CustomUser, on_delete=models.PROTECT, verbose_name="Автор", null=True)
+    users_like = models.ManyToManyField(CustomUser, related_name='images_liked', blank=True)
     
     def __str__(self):
         return self.title
@@ -70,34 +71,9 @@ class Brands(models.Model):
 
 def get_default_photo():
     return 'cars/static/cars/images/default_photo.avif'
-    
-class CustomUser(AbstractUser):
-    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="user URL")
-    photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото", blank=True, null=True)
-    is_moder = models.BooleanField(default=False)
 
-    def get_default_photo():
-        return 'photos/profile_picture/defaultphoto.jpg'
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            base_slug = slugify(self.username)
-            slug = base_slug
-            counter = 1
-            while Post.objects.filter(slug=slug).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
-            self.slug = slug
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.username 
-    
-    def get_absolute_url(self):
-        return reverse('profile', kwargs={'profile_slug':self.slug})
-    
 class FeedbackMessage(models.Model):
-    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
+    author = models.ForeignKey(CustomUser, on_delete=models.PROTECT, verbose_name="Автор", null=True)
     short_content = models.CharField(max_length=50, verbose_name="Краткое описание")
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     content = models.TextField(blank=True, verbose_name="Текст обращения")
@@ -111,7 +87,7 @@ class FeedbackMessage(models.Model):
         ordering = ['time_create', 'author_id']
 
 class Comment(models.Model):
-    author = models.ForeignKey('CustomUser', on_delete=models.PROTECT, verbose_name="Автор", null=True)
+    author = models.ForeignKey(CustomUser, on_delete=models.PROTECT, verbose_name="Автор", null=True)
     time_create = models.DateTimeField(auto_now_add=True, verbose_name="Время создания")
     content = models.TextField(blank=False, verbose_name="Комментарий", null=True)
     post = models.ForeignKey('Post', verbose_name="Комментарии", blank=True, on_delete=models.CASCADE)
