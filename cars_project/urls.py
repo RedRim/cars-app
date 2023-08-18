@@ -7,6 +7,7 @@ from cars_project import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('cars.urls'), name='home'),
+    path('account/', include('account.urls'), name='account')
 ]
 
 if settings.DEBUG:
