@@ -1,7 +1,9 @@
 from .models import *
 from .forms import AddCommentForm
 
-menu = [{'title': 'О Сайте', 'url_name': 'about'},
+menu = [{'title': 'Главная', 'url_name': 'home'},
+        {'title': 'Авторы', 'url_name': 'authors'},
+        {'title': 'О Сайте', 'url_name': 'about'},
         {'title': 'Обратная связь', 'url_name': 'contact'},
         ]
 
