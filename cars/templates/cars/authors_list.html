@@ -6,7 +6,7 @@
     <a href="{{ user.get_absolute_url }}">
         <div>
             <h3>{{user.first_name}} {{user.last_name}}</h3>
-            <p>Статей: {{user.posts.count}}</p>
+            <p>Статей: {% if user.posts.count %}{{user.posts.count}}{% else %}0{% endif %}</p>
         </div>
     </a>
     {% endfor %}
