@@ -2,7 +2,7 @@ from cars.models import Post
 from .forms import *
 from cars.utils import DataMixin
 
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -12,6 +12,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import PasswordChangeForm
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 
 class RegisterUser(DataMixin, CreateView):
     form_class = RegisterUserForm
@@ -105,7 +107,33 @@ class Profile(DataMixin, ListView):
         if self.request.user.is_authenticated and self.request.user.slug == self.kwargs['profile_slug']:
             return Post.objects.filter(author__slug=self.kwargs['profile_slug'])
         return Post.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=True)
-    
+
+# def follow_user(request, user_slug):
+#     try:
+#         user_to_follow = CustomUser.objects.get(slug=user_slug)
+#         user_to_follow.followres.add(request.user)
+#     except(ObjectDoesNotExist):
+#         #Сдесь должно быть сообщение о неудаче
+#         return redirect(request.META.get('HTTP_REFERER'))
+#     return redirect(request.META.get('HTTP_REFERER'))
+
+@login_required
+def follow_user(request):
+    user_slug = request.POST.get('user_slug')
+    action = request.POST.get('action')
+    if user_slug and action:
+        try:
+            post = CustomUser.objects.get(slug=user_slug)
+            if action == 'follow':
+                post.followers.add(request.user)
+            else:
+                post.followers.remove(request.user)
+            return JsonResponse({'status': 'ok'})
+        except CustomUser.DoesNotExist:
+            pass
+    return JsonResponse({'status': 'error'})
+
+
 def logout_user(request):
     logout(request)
     return redirect('login')

@@ -6,15 +6,9 @@ from account.models import CustomUser
 from typing import Any, Dict
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, FormView
-from django.urls import reverse_lazy
-from django.contrib.auth.views import LoginView
-from django.contrib.auth import logout, login
+from django.views.generic import ListView, DetailView, CreateView
 from django.views.decorators.http import require_POST
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.forms import PasswordChangeForm
-from django.db import transaction
-from django.core.paginator import Paginator
+
 
 class CarsHome(DataMixin, ListView):
     model = Post

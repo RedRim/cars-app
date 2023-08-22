@@ -1,13 +1,71 @@
 {% extends 'cars/base.html' %}
-{% load user_tags %}
 
 {% block content %}
     {% for user in users %}
     <a href="{{ user.get_absolute_url }}">
         <div>
             <h3>{{user.first_name}} {{user.last_name}}</h3>
+            {% if request.user.is_authenticated %}
+                    <a href="#" data-user_slug="{{ user.slug }}" 
+                                data-action="{% if request.user in user.followers.all %}un{% endif %}follow" 
+                                class="follow button">
+                        {% if request.user not in user.followers.all %}
+                            Подписаться
+                        {% else %}
+                            Отписаться
+                        {% endif %}
+                    </a>
+            {% endif %}
+            <span class="count">Подпищиков: <span class="total">{% if user.followers.count %}{{user.followers.count}}{% else %}0{% endif %}</span>
             <p>Статей: {% if user.posts.count %}{{user.posts.count}}{% else %}0{% endif %}</p>
         </div>
     </a>
     {% endfor %}
+{% endblock %}
+
+
+{% block domready %}
+    const url = '{% url "follow" %}';
+    var options = {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin'
+    }
+
+    var followButtons = document.querySelectorAll('a.follow')
+
+    for (let i = 0; i < followButtons.length; i++) {
+        followButtons[i].addEventListener('click', function(e) {
+            e.preventDefault();
+            var followButton = this;
+        
+            // add request body
+            var formData = new FormData();
+            formData.append('user_slug', followButton.dataset.user_slug);
+            formData.append('action', followButton.dataset.action);
+            options['body'] = formData;
+        
+            // send HTTP request
+            fetch(url, options)
+            .then(response => response.json())
+            .then(data => {
+                    if (data['status'] === 'ok')
+                    {
+                        var previousAction = followButton.dataset.action;
+            
+                        // toggle button text and data-action
+                        var action = previousAction === 'follow' ? 'unfollow' : 'follow';
+                        followButton.dataset.action = action;
+                        followButton.innerHTML = action === 'follow' ? 'Подписаться' : 'Отписаться';
+            
+                        // update like count
+                        var followersCounters = document.querySelectorAll('span.count .total');
+                        var followersCount = followersCounters[i];
+                        var totalFollowers = parseInt(followersCount.innerHTML);
+                        followersCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 : totalFollowers - 1;
+                    }
+                })
+            }
+        );
+    }
 {% endblock %}
