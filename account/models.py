@@ -3,12 +3,12 @@ from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from django.utils.text import slugify
 
-# Create your models here.
 
 class CustomUser(AbstractUser):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="user URL")
     photo = models.ImageField(upload_to="photos/%Y/%m/%d/", verbose_name="Фото", blank=True, null=True)
     is_moder = models.BooleanField(default=False)
+    following = models.ManyToManyField('self', through='Follow', related_name='followers', symmetrical=False)
 
     def get_default_photo():
         return 'photos/profile_picture/defaultphoto.jpg'
@@ -29,3 +29,8 @@ class CustomUser(AbstractUser):
     
     def get_absolute_url(self):
         return reverse('profile', kwargs={'profile_slug':self.slug})
+    
+class Follow(models.Model):
+    user_from = models.ForeignKey(CustomUser, related_name='rel_from_set', on_delete=models.CASCADE)
+    user_to = models.ForeignKey(CustomUser, related_name='rel_to_set', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
