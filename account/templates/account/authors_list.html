@@ -6,11 +6,10 @@
     <a href="{{ user.get_absolute_url }}">
         <div>
             <h3>{{user.first_name}} {{user.last_name}}</h3>
-            {% if requset.user.is_autenticated %}
-                {% subscribe_button user %}
-            {% else %}
-                <span class="count">Подпищиков: <span class="total">{% if user.followers.count %}{{user.followers.count}}{% else %}0{% endif %}</span>
-            {% endif %}
+
+            <!-- Кнопка подписки -->
+            {% subscribe_button request user %}
+            
             <p>Статей: {% if user.posts.count %}{{user.posts.count}}{% else %}0{% endif %}</p>
         </div>
     </a>
