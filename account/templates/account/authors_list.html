@@ -1,28 +1,24 @@
 {% extends 'cars/base.html' %}
+{% load account_tags %}
 
 {% block content %}
     {% for user in users %}
     <a href="{{ user.get_absolute_url }}">
         <div>
             <h3>{{user.first_name}} {{user.last_name}}</h3>
-            {% if request.user.is_authenticated %}
-                    <a href="#" data-user_slug="{{ user.slug }}" 
-                                data-action="{% if request.user in user.followers.all %}un{% endif %}follow" 
-                                class="follow button">
-                        {% if request.user not in user.followers.all %}
-                            Подписаться
-                        {% else %}
-                            Отписаться
-                        {% endif %}
-                    </a>
-            {% endif %}
-            <span class="count">Подпищиков: <span class="total">{% if user.followers.count %}{{user.followers.count}}{% else %}0{% endif %}</span>
+
+            <!-- Кнопка подписки -->
+            {% subscribe_button request user %}
+            
             <p>Статей: {% if user.posts.count %}{{user.posts.count}}{% else %}0{% endif %}</p>
         </div>
     </a>
     {% endfor %}
 {% endblock %}
 
+{% block footer %}
+        {% include "cars/includes/pagination.html" with page_obj=page_obj %}
+{% endblock %}
 
 {% block domready %}
     const url = '{% url "follow" %}';
@@ -59,7 +55,7 @@
                         followButton.innerHTML = action === 'follow' ? 'Подписаться' : 'Отписаться';
             
                         // update like count
-                        var followersCounters = document.querySelectorAll('span.count .total');
+                        var followersCounters = document.querySelectorAll('span.count_followers .total_followers');
                         var followersCount = followersCounters[i];
                         var totalFollowers = parseInt(followersCount.innerHTML);
                         followersCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 : totalFollowers - 1;

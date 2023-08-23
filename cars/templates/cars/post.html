@@ -1,4 +1,5 @@
 {% extends 'cars/base.html' %}
+{% load account_tags %}
 
 {% block content %}
     <h1>{{post.title}}</h1>
@@ -11,6 +12,9 @@
 
     <p> 
         Автор: <a href="{{ post.author.get_absolute_url }}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
+        
+        {% subscribe_button request post.author %}
+
         <!-- кнопка модерации -->
         {% if request.user.is_authenticated and request.user.is_moder and post.is_published == False %}
             <form method="POST" action="{% url 'toggle_is_published' post.slug %}">
@@ -23,8 +27,8 @@
     <!-- Кнопка лайка -->
     {% with total_likes=post.users_like.count users_like=post.users_like.all %}
             <div>
-                <span class="count">
-                    <span class="total">{{ total_likes }}</span>
+                <span class="count_likes">
+                    <span class="total_likes">{{ total_likes }}</span>
                     like{{ total_likes|pluralize }}
                 </span>
                 {% if request.user.is_authenticated %}
@@ -53,7 +57,7 @@
     {% endif %}
 
     <!-- Блок с комментариями пользователей -->
-    <p>Комментариев: {{comments.count}}</p>
+    <p>Комментариев: {{ comments.count }}</p>
     {% for comment in comments.all %}
         <h3>
             <a href="{{ post.author.get_absolute_url }}">{{ comment.author.first_name }} {{ comment.author.last_name }}</a>
@@ -63,42 +67,77 @@
 {% endblock %}
 
 {% block domready %}
-  const url = '{% url "add_like" %}';
-  var options = {
-    method: 'POST',
-    headers: {'X-CSRFToken': csrftoken},
-    mode: 'same-origin'
-  }
+    const likeUrl = '{% url "add_like" %}';
+    const followUrl = '{% url "follow" %}';
+  
+    var options = {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin'
+    }
 
-  document.querySelector('a.like')
-          .addEventListener('click', function(e){
-    e.preventDefault();
-    var likeButton = this;
+    document.querySelector('a.like')
+        .addEventListener('click', function(e) {
+            e.preventDefault();
+            var likeButton = this;
 
-    // add request body
-    var formData = new FormData();
-    formData.append('post_slug', likeButton.dataset.post_slug);
-    formData.append('action', likeButton.dataset.action);
-    options['body'] = formData;
+            // add request body
+            var formData = new FormData();
+            formData.append('post_slug', likeButton.dataset.post_slug);
+            formData.append('action', likeButton.dataset.action);
+            options['body'] = formData;
 
-    // send HTTP request
-    fetch(url, options)
-    .then(response => response.json())
-    .then(data => {
-      if (data['status'] === 'ok')
-      {
-        var previousAction = likeButton.dataset.action;
+            // send HTTP request
+            fetch(likeUrl, options)
+                .then(response => response.json())
+                .then(data => {
+                if (data['status'] === 'ok')
+                {
+                    var previousAction = likeButton.dataset.action;
 
-        // toggle button text and data-action
-        var action = previousAction === 'like' ? 'unlike' : 'like';
-        likeButton.dataset.action = action;
-        likeButton.innerHTML = action;
+                    // toggle button text and data-action
+                    var action = previousAction === 'like' ? 'unlike' : 'like';
+                    likeButton.dataset.action = action;
+                    likeButton.innerHTML = action;
 
-        // update like count
-        var likeCount = document.querySelector('span.count .total');
-        var totalLikes = parseInt(likeCount.innerHTML);
-        likeCount.innerHTML = previousAction === 'like' ? totalLikes + 1 : totalLikes - 1;
-      }
-    })
-  });
+                    // update like count
+                    var likeCount = document.querySelector('span.count_likes .total_likes');
+                    var totalLikes = parseInt(likeCount.innerHTML);
+                    likeCount.innerHTML = previousAction === 'like' ? totalLikes + 1 : totalLikes - 1;
+                }
+            })
+        }
+    );
+
+    document.querySelector('a.follow')
+        .addEventListener('click', function(e) {
+            e.preventDefault();
+            var followButton = this;
+
+            var formData = new FormData();
+            formData.append('user_slug', followButton.dataset.user_slug);
+            formData.append('action', followButton.dataset.action);
+            options['body'] = formData;
+
+            fetch(followUrl, options)
+                .then(response => response.json())
+                .then(data => {
+                if (data['status'] === 'ok')
+                {
+                    var previousAction = followButton.dataset.action;
+
+                    // toggle button text and data-action
+                    var action = previousAction === 'follow' ? 'unfollow' : 'follow';
+                    followButton.dataset.action = action;
+                    followButton.innerHTML = action === 'follow' ? 'Подписаться' : 'Отписаться';
+
+                    // update like count
+                    var followersCount = document.querySelector('span.count_followers .total_followers');
+                    var totalFollowers = parseInt(followersCount.innerHTML);
+                    followersCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 : totalFollowers - 1;
+                }
+            })
+        }
+    );
+        
 {% endblock %}

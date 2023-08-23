@@ -108,14 +108,21 @@ class Profile(DataMixin, ListView):
             return Post.objects.filter(author__slug=self.kwargs['profile_slug'])
         return Post.objects.filter(author__slug=self.kwargs['profile_slug'], is_published=True)
 
-# def follow_user(request, user_slug):
-#     try:
-#         user_to_follow = CustomUser.objects.get(slug=user_slug)
-#         user_to_follow.followres.add(request.user)
-#     except(ObjectDoesNotExist):
-#         #Сдесь должно быть сообщение о неудаче
-#         return redirect(request.META.get('HTTP_REFERER'))
-#     return redirect(request.META.get('HTTP_REFERER'))
+class AuthorsList(DataMixin, ListView):
+    model = CustomUser
+    context_object_name = 'users'
+    template_name = "account/authors_list.html"
+    paginate_by = 3
+
+    def get_queryset(self):
+        if(self.request.user.is_authenticated):
+            return CustomUser.objects.all().exclude(slug=self.request.user.slug)
+        return CustomUser.objects.all()
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Авторы')
+        return dict(list(context.items()) + list(c_def.items()))
 
 @login_required
 def follow_user(request):
