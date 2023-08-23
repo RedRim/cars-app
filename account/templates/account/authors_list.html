@@ -6,13 +6,20 @@
     <a href="{{ user.get_absolute_url }}">
         <div>
             <h3>{{user.first_name}} {{user.last_name}}</h3>
-            {% subscribe_button user %}
+            {% if requset.user.is_autenticated %}
+                {% subscribe_button user %}
+            {% else %}
+                <span class="count">Подпищиков: <span class="total">{% if user.followers.count %}{{user.followers.count}}{% else %}0{% endif %}</span>
+            {% endif %}
             <p>Статей: {% if user.posts.count %}{{user.posts.count}}{% else %}0{% endif %}</p>
         </div>
     </a>
     {% endfor %}
 {% endblock %}
 
+{% block footer %}
+        {% include "cars/includes/pagination.html" with page_obj=page_obj %}
+{% endblock %}
 
 {% block domready %}
     const url = '{% url "follow" %}';

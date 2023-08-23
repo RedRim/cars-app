@@ -112,8 +112,11 @@ class AuthorsList(DataMixin, ListView):
     model = CustomUser
     context_object_name = 'users'
     template_name = "account/authors_list.html"
+    paginate_by = 3
 
     def get_queryset(self):
+        if(self.request.user.is_authenticated):
+            return CustomUser.objects.all().exclude(slug=self.request.user.slug)
         return CustomUser.objects.all()
     
     def get_context_data(self, *, object_list=None, **kwargs):
