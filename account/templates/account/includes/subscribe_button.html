@@ -1,0 +1,11 @@
+<a href="#" data-user_slug="{{ user.slug }}" 
+            data-action="{% if request.user in user.followers.all %}un{% endif %}follow" 
+            class="follow button">
+    {% if request.user not in user.followers.all %}
+        Подписаться
+    {% else %}
+        Отписаться
+    {% endif %}
+</a>
+
+<span class="count">Подпищиков: <span class="total">{% if user.followers.count %}{{user.followers.count}}{% else %}0{% endif %}</span>
