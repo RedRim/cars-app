@@ -9,6 +9,7 @@ urlpatterns = [
     path('profile/<slug:profile_slug>/', Profile.as_view(), name='profile'),
     path('edit/', EditProfile.as_view(), name='editprofile'),
     path('edit/password/', EditPassword.as_view(), name='editpassword'),
+    path('authors/', AuthorsList.as_view(), name='authors'),
     path('follow/', follow_user, name='follow')
 ]
 

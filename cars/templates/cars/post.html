@@ -11,6 +11,7 @@
 
     <p> 
         Автор: <a href="{{ post.author.get_absolute_url }}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
+        
         <!-- кнопка модерации -->
         {% if request.user.is_authenticated and request.user.is_moder and post.is_published == False %}
             <form method="POST" action="{% url 'toggle_is_published' post.slug %}">

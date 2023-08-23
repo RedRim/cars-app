@@ -96,19 +96,6 @@ class ShowPost(DataMixin, DetailView):
         c_def = self.get_user_context(title=context['post'].title, form=AddCommentForm, comments=Comment.objects.filter(post__slug=context['post'].slug))
         return dict(list(context.items()) + list(c_def.items()))
 
-class AuthorsList(DataMixin, ListView):
-    model = CustomUser
-    context_object_name = 'users'
-    template_name = "cars/authors_list.html"
-
-    def get_queryset(self):
-        return CustomUser.objects.all()
-    
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Авторы')
-        return dict(list(context.items()) + list(c_def.items()))
-
 class CarsBrand(DataMixin, ListView):
     model = Post
     template_name = "cars/index.html"
