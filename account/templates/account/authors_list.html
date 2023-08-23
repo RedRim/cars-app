@@ -55,7 +55,7 @@
                         followButton.innerHTML = action === 'follow' ? 'Подписаться' : 'Отписаться';
             
                         // update like count
-                        var followersCounters = document.querySelectorAll('span.count .total');
+                        var followersCounters = document.querySelectorAll('span.count_followers .total_followers');
                         var followersCount = followersCounters[i];
                         var totalFollowers = parseInt(followersCount.innerHTML);
                         followersCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 : totalFollowers - 1;

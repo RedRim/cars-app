@@ -1,4 +1,4 @@
-{% if request.user.is_authenticated %}
+{% if request.user.is_authenticated and request.user != user%}
     <a href="#" data-user_slug="{{ user.slug }}" 
                 data-action="{% if request.user in user.followers.all %}un{% endif %}follow" 
                 class="follow button">
@@ -9,7 +9,7 @@
         {% endif %}
     </a>
 
-    <span class="count">Подпищиков: <span class="total">{% if user.followers.count %}{{user.followers.count}}{% else %}0{% endif %}</span>
+    <span class="count_followers">Подпищиков: <span class="total_followers">{% if user.followers.count %}{{user.followers.count}}{% else %}0{% endif %}</span>
 {% else %}
-    <span class="count">Подпищиков: <span class="total">{% if user.followers.count %}{{user.followers.count}}{% else %}0{% endif %}</span>
+    <span class="count_followers">Подпищиков: <span class="total_followers">{% if user.followers.count %}{{user.followers.count}}{% else %}0{% endif %}</span>
 {% endif %}
