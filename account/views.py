@@ -93,13 +93,10 @@ class Profile(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = CustomUser.objects.get(slug=self.kwargs['profile_slug'])
+        user = get_object_or_404(CustomUser, slug=self.kwargs['profile_slug'])
         if not self.object_list:
             context['empty_message'] = "Список статей пуст"
-            author = f"{user.first_name} {user.last_name}"
-        else:
-            author = f"{user.first_name} {user.last_name}"
-        c_def = self.get_user_context(title=author)
+        c_def = self.get_user_context(user=user)
         context.update(c_def)
         return context
     
@@ -112,7 +109,7 @@ class AuthorsList(DataMixin, ListView):
     model = CustomUser
     context_object_name = 'users'
     template_name = "account/authors_list.html"
-    paginate_by = 20
+    paginate_by = 10
 
     def get_queryset(self):
         if(self.request.user.is_authenticated):
