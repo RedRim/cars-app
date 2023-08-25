@@ -1,19 +1,28 @@
 {% extends 'cars/base.html' %}
 {% load account_tags %}
+{% load thumbnail %}
+{% load static %}
 
 {% block content %}
-    {% for user in users %}
-    <a href="{{ user.get_absolute_url }}">
-        <div>
-            <h3>{{user.first_name}} {{user.last_name}}</h3>
-
-            <!-- Кнопка подписки -->
-            {% subscribe_button request user %}
-            
-            <p>Статей: {% if user.posts.count %}{{user.posts.count}}{% else %}0{% endif %}</p>
+    <div id="users-list">
+        {% for user in users %}
+        <div class="user">
+            <a href="{{ user.get_absolute_url }}">
+                    <div class="info">
+                        {% if user.photo %}
+                            <img src="{% thumbnail user.photo 180x180 %}">
+                        {% else %}
+                            <img src="{% static 'images/default_profile_photo.png' %}">
+                        {% endif %}
+                        <h3>{{user.first_name}} {{user.last_name}}</h3>
+                        <p>Статей: {% if user.posts.count %}{{user.posts.count}}{% else %}0{% endif %}</p>
+                    </div>
+                    <!-- Кнопка подписки -->
+                    {% subscribe_button request user %}
+            </a>
         </div>
-    </a>
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block footer %}

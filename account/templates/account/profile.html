@@ -1,29 +1,76 @@
 {% extends 'cars/base.html' %}
+{% load account_tags %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
+    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
 
-    {% if request.user.is_authenticated and user.get_absolute_url == request.path %}
+    {% if request.user.is_authenticated and request.user == user %}
         <a href="{% url 'editprofile' %}"><button type="submit">Изменить</button></a>
     {% endif %}
+
+    {% subscribe_button request user %}
 
     {% if empty_message %}
         <p>{{ empty_message }}</p>
     {% else %}
         <ul>
             {% for p in posts %}
-            <li class="article">
-                {% if p.photo %}
-                    <p class="link-read-post"><a href="{{ p.get_absolute_url }}"><img class="img-article-left thumb" src="/media/{{ p.photo }}" alt="Фото"></a></p>
-                {% endif %}
-                <h2><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></h2>
-                <p>{{ p.short_content }}</p>
-                {% if p.is_published == False %}
-                    <p class="link-read-post"><a>На проверке</a></p>
-                {% endif %}
-                <hr>
-            </li>
+                <a class="article" href="{{ p.get_absolute_url }}">
+                    <li class="left">
+                        {% if p.photo %}
+                            <img class="img_article_left" src="/media/{{ p.photo }}" alt="Фото">
+                        {% endif %}
+
+                        <p class="title_left">{{ p.title }}</p>
+                        <p class="short_content_left">{{ p.short_content }}</p>
+
+                        {% if p.is_published == False %}
+                            <p class="link-read-post"><a>На проверке</a></p>
+                        {% endif %}
+                    </li>
+                </a>
             {% endfor %}
         </ul>
     {% endif %}
+{% endblock %}
+
+{% block domready %}
+    const followUrl = '{% url "follow" %}';
+
+    var options = {
+        method: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        mode: 'same-origin'
+    }
+
+    document.querySelector('a.follow')
+        .addEventListener('click', function(e) {
+            e.preventDefault();
+            var followButton = this;
+
+            var formData = new FormData();
+            formData.append('user_slug', followButton.dataset.user_slug);
+            formData.append('action', followButton.dataset.action);
+            options['body'] = formData;
+
+            fetch(followUrl, options)
+                .then(response => response.json())
+                .then(data => {
+                if (data['status'] === 'ok')
+                {
+                    var previousAction = followButton.dataset.action;
+
+                    // toggle button text and data-action
+                    var action = previousAction === 'follow' ? 'unfollow' : 'follow';
+                    followButton.dataset.action = action;
+                    followButton.innerHTML = action === 'follow' ? 'Подписаться' : 'Отписаться';
+
+                    // update like count
+                    var followersCount = document.querySelector('span.count_followers .total_followers');
+                    var totalFollowers = parseInt(followersCount.innerHTML);
+                    followersCount.innerHTML = previousAction === 'follow' ? totalFollowers + 1 : totalFollowers - 1;
+                }
+            })
+        }
+    );
 {% endblock %}
