@@ -89,19 +89,19 @@ class Profile(DataMixin, ListView):
     model = Post
     template_name = "account/profile.html"
     context_object_name = 'posts'
-    slug_url_kwarg = 'profile_slug'
+    # slug_url_kwarg = 'profile_slug'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = CustomUser.objects.get(slug=self.kwargs['profile_slug'])
         if not self.object_list:
             context['empty_message'] = "Список статей пуст"
-            author = f"{self.request.user.last_name} {self.request.user.first_name}"
+            author = f"{user.first_name} {user.last_name}"
         else:
-            author = f"{self.object_list.first().author.last_name} {self.object_list.first().author.first_name}"
+            author = f"{user.first_name} {user.last_name}"
         c_def = self.get_user_context(title=author)
         context.update(c_def)
         return context
-    
     
     def get_queryset(self):
         if self.request.user.is_authenticated and self.request.user.slug == self.kwargs['profile_slug']:
@@ -112,7 +112,7 @@ class AuthorsList(DataMixin, ListView):
     model = CustomUser
     context_object_name = 'users'
     template_name = "account/authors_list.html"
-    paginate_by = 3
+    paginate_by = 20
 
     def get_queryset(self):
         if(self.request.user.is_authenticated):
