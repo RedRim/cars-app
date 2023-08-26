@@ -96,7 +96,7 @@ class Profile(DataMixin, ListView):
         user = get_object_or_404(CustomUser, slug=self.kwargs['profile_slug'])
         if not self.object_list:
             context['empty_message'] = "Список статей пуст"
-        c_def = self.get_user_context(user=user)
+        c_def = self.get_user_context(user=user, title="Профиль")
         context.update(c_def)
         return context
     
