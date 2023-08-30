@@ -1,5 +1,4 @@
 from .models import Post, FeedbackMessage, Comment
-
 from django import forms
 from django.core.exceptions import ValidationError
 
@@ -7,6 +6,7 @@ class AddPostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['brand'].empty_label = "Марка не выбрана"
+        # self.fields['short_content'].help_text = "Вы можете писать статьи используя синтаксис markdown"
 
     class Meta:
         model = Post
@@ -14,6 +14,9 @@ class AddPostForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),
             'content': forms.Textarea(attrs={'cols': 60, 'rows': 10})
+        }
+        help_texts = {
+            'content': "Вы можете писать статьи используя синтаксис markdown.",
         }
 
     def clean_title(self):

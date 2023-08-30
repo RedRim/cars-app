@@ -1,5 +1,6 @@
 {% extends 'cars/base.html' %}
 {% load account_tags %}
+{% load cars_tags %}
 
 {% block content %}
     <h1>{{post.title}}</h1>
@@ -8,7 +9,7 @@
         <p><img class="img-article-left thumb" src="{{ post.photo.url }}"></p>
     {% endif %}
 
-    <p>{{ post.content }}</p>
+    <p>{{ post.content|markdown}}</p>
 
     <p> 
         Автор: <a href="{{ post.author.get_absolute_url }}">{{ post.author.first_name }} {{ post.author.last_name }}</a>
