@@ -1,4 +1,5 @@
 {% extends 'cars/base.html' %}
+{% load cars_tags %}
 
 {% block content %}
     <div class="filters">
@@ -27,27 +28,11 @@
 
     <p class="headline">Статьи об автомобилях</p>
     <ul class="content">
-        {% for p in posts %}
+        {% for post in posts %}
             {% if forloop.counter|divisibleby:2 %}
-                <a class="article" href="{{ p.get_absolute_url }}">
-                    <li class="left">
-                        {% if p.photo %}
-                            <img class="img_article_left" src="/media/{{ p.photo }}" alt="Фото">
-                        {% endif %}
-                        <p class="title_left">{{ p.title }}</p>
-                        <p class="short_content_left">{{ p.short_content }}</p>
-                    </li>
-                </a>
+                {% post_item post "left" %}
             {% else %}
-                <a class="article" href="{{ p.get_absolute_url }}">
-                    <li class="right">
-                        {% if p.photo %}
-                            <img class="img_article_right" src="/media/{{ p.photo }}" alt="Фото">
-                        {% endif %}
-                        <p class="title_right">{{ p.title }}</p>
-                        <p class="short_content_right">{{ p.short_content }}</p>
-                    </li>
-                </a>
+                {% post_item post "right" %}
             {% endif %}
         {% endfor %}
     </ul>

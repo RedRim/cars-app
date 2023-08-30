@@ -1,5 +1,6 @@
 {% extends 'cars/base.html' %}
 {% load account_tags %}
+{% load cars_tags %}
 
 {% block content %}
     <h1>{{ user.first_name }} {{ user.last_name }}</h1>
@@ -15,20 +16,7 @@
     {% else %}
         <ul>
             {% for p in posts %}
-                <a class="article" href="{{ p.get_absolute_url }}">
-                    <li class="left">
-                        {% if p.photo %}
-                            <img class="img_article_left" src="/media/{{ p.photo }}" alt="Фото">
-                        {% endif %}
-
-                        <p class="title_left">{{ p.title }}</p>
-                        <p class="short_content_left">{{ p.short_content }}</p>
-
-                        {% if p.is_published == False %}
-                            <p class="link-read-post"><a>На проверке</a></p>
-                        {% endif %}
-                    </li>
-                </a>
+                {% post_item p "left" %}
             {% endfor %}
         </ul>
     {% endif %}

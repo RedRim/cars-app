@@ -1,0 +1,9 @@
+<a class="article" href="{{ post.get_absolute_url }}">
+  <li class="{{ oreintation }}">
+      {% if post.photo %}
+          <img class="img_article_{{ oreintation }}" src="/media/{{ post.photo }}" alt="Фото">
+      {% endif %}
+      <p class="title_{{ oreintation }}">{{ post.title }}</p>
+      <p class="short_content_{{ oreintation }}">{{ post.short_content }}</p>
+  </li>
+</a>
