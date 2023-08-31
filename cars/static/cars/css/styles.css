@@ -141,10 +141,16 @@ ul.mainmenu {
 	font-size: 20px;
 	overflow: hidden;
 }
+
 ul.mainmenu li {
 	float: left;
 	margin: 18px 5px 0 30px;
 }
+
+ul.mainmenu li.selected {
+	color: #ff0303; 
+}
+
 ul.mainmenu li.logo {margin: 0;}
 ul.mainmenu li.last {
 	float: right;

@@ -113,8 +113,8 @@ class AuthorsList(DataMixin, ListView):
 
     def get_queryset(self):
         if(self.request.user.is_authenticated):
-            return CustomUser.objects.all().exclude(slug=self.request.user.slug)
-        return CustomUser.objects.all()
+            return CustomUser.objects.all().exclude(slug=self.request.user.slug).order_by('-followers')
+        return CustomUser.objects.all().order_by('-followers')
     
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

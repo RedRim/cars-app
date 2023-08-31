@@ -17,6 +17,7 @@
                 {% endfor %}
 
                 {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'subscriptions' %}">Подписки</a></li>
                     <li><a href="{% url 'addpage' %}">Добавить статью</a></li>
                     {% if user.photo %}
                         <a href="{{ user.get_absolute_url }}"><img class="user-photo" src="/media/{{ user.photo }}"></a>

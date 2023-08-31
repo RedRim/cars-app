@@ -51,6 +51,12 @@ class CarsHome(DataMixin, ListView):
             queryset = queryset.filter(author__slug=author_slug)
 
         return queryset
+    
+class SubscriptionPostsList(CarsHome):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        following_users_ids = self.request.user.following.values_list('id', flat=True)
+        return queryset.filter(author__in=following_users_ids)
 
 class AddPage(DataMixin, CreateView):
     form_class = AddPostForm
