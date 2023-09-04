@@ -10,6 +10,7 @@ urlpatterns = [
     path('edit/', EditProfile.as_view(), name='editprofile'),
     path('edit/password/', EditPassword.as_view(), name='editpassword'),
     path('authors/', AuthorsList.as_view(), name='authors'),
+    path('subscriptions/', SubscriptionPostsList.as_view(), name='subscriptions'),
     path('follow/', follow_user, name='follow')
 ]
 

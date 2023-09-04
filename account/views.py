@@ -1,6 +1,7 @@
 from cars.models import Post
 from .forms import *
 from cars.utils import DataMixin
+from cars.views import PostList
 
 from django.http import HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -120,6 +121,14 @@ class AuthorsList(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title='Авторы')
         return dict(list(context.items()) + list(c_def.items()))
+    
+class SubscriptionPostsList(PostList):
+    template_name = 'account/subscriptions.html'
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        following_users_ids = self.request.user.following.values_list('id', flat=True)
+        return queryset.filter(author__in=following_users_ids)
 
 @login_required
 def follow_user(request):

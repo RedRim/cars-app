@@ -9,8 +9,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.views.decorators.http import require_POST
 
-
-class CarsHome(DataMixin, ListView):
+class PostList(DataMixin, ListView):
     model = Post
     template_name = 'cars/index.html'
     context_object_name = 'posts'
@@ -51,12 +50,6 @@ class CarsHome(DataMixin, ListView):
             queryset = queryset.filter(author__slug=author_slug)
 
         return queryset
-    
-class SubscriptionPostsList(CarsHome):
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        following_users_ids = self.request.user.following.values_list('id', flat=True)
-        return queryset.filter(author__in=following_users_ids)
 
 class AddPage(DataMixin, CreateView):
     form_class = AddPostForm
